@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Career and Internship Chatbot</title>
+</head>
+<body>
+    <h1>Student Career and Internship Chatbot</h1>
+
+    <label for="username">Username:</label>
+    <input type="text" id="username" placeholder="Enter your username">
+
+    <br><br>
+
+    <div id="chatBox"></div>
+
+    <input type="text" id="message" placeholder="Type your message">
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        function sendMessage() {
+            const username = document.getElementById("username").value.trim();
+            const message = document.getElementById("message").value.trim();
+
+            if (username === "" || message === "") {
+                alert("Please enter your username and message.");
+                return;
+            }
+
+            fetch("/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: username,
+                    message: message
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const chatBox = document.getElementById("chatBox");
+
+                chatBox.innerHTML += "<p><strong>You:</strong> " + message + "</p>";
+                chatBox.innerHTML += "<p><strong>Bot:</strong> " + data.reply + "</p>";
+
+                document.getElementById("message").value = "";
+            });
+        }
+    </script>
+</body>
+</html>
