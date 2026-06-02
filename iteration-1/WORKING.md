@@ -1,3 +1,4 @@
 ## Working
-- Test updated HTML and CSS integration
-- Ask group members to run the chatbot on their devices
+- Clean and inspect 6486-rows internship dataset
+- Identify important columns 
+- Connect internship dataset to Flask backend
