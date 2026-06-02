@@ -1,10 +1,13 @@
 # Backend logic: receive messages, match keywords, save data, send replies
 from flask import Flask, render_template, request, jsonify
+from google import genai
+from google.genai import types
 import csv
 from datetime import datetime
 import os
 
 app = Flask(__name__)
+client = genai.Client()
 
 BOT_DATA_FILE = "bot_responses.csv"
 LOG_FILE = "conversation_log.csv"
@@ -31,21 +34,38 @@ def load_bot_responses():
     return responses
 
 def get_bot_reply(user_message):
-    words = user_message.lower().strip().split()
-    responses = load_bot_responses()
+    try:
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=user_message,
+            config=types.GenerateContentConfig(
+                system_instruction=(
+                    "You are CareerBot, a career and internship support chatbot "
+                    "for university students. Provide clear and concise guidance "
+                    "about resumes, interviews, internship preparation, and career planning. "
+                    "Do not invent official university procedures, active job vacancies, "
+                    "deadlines, or links. If official information is needed, advise the "
+                    "student to check the official university source."
+                )
+            )
+        )
 
-    for response in responses:
-        keyword = response["keyword"].lower().strip()
+        return (
+            response.text,
+            "gemini",
+            "answered",
+            "LLM-generated response"
+        )
 
-        if keyword in words:
-            return response["bot_reply"], keyword, "answered", "keyword matched"
+    except Exception as error:
+        print("Gemini API error:", error)
 
-    return (
-        "Sorry, I do not have information about that yet.",
-        "none",
-        "unanswered",
-        "no keyword matched"
-    )
+        return (
+            "Sorry, I could not generate a response at the moment. Please try again later.",
+            "gemini",
+            "error",
+            "LLM request failed"
+        )
 
 
 def get_next_conversation_no():
