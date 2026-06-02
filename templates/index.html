@@ -1,52 +1,326 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Student Career and Internship Chatbot</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CareerBot – Student Career & Internship Assistant</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Student Career and Internship Chatbot</h1>
 
-    <label for="username">Username:</label>
-    <input type="text" id="username" placeholder="Enter your username">
+  <!-- ══ NAVIGATION ══ -->
+  <nav>
+    <a class="nav-brand" href="#">
+      <div class="nav-icon">🎯</div>
+      Career<span class="dot">Bot</span>
+    </a>
+    <div class="nav-links">
+      <a href="#">Home</a>
+      <a href="#">Internships</a>
+      <a href="#">Resources</a>
+      <a href="#">Events</a>
+      <a href="#">Contact</a>
+    </div>
+    <button class="nav-cta">Get Started</button>
+  </nav>
 
-    <br><br>
+  <!-- ══ HERO ══ -->
+  <section class="hero">
+    <div class="hero-badge">
+      <span></span> AI-POWERED CAREER ASSISTANT · ONLINE 24/7
+    </div>
+    <h1>Your <em>career journey</em> starts with the right conversation</h1>
+    <p>Find internships, build your CV, ace your interviews — all through one intelligent chatbot built for university students.</p>
+    <div class="hero-pills">
+      <div class="pill">🔍 Find internships</div>
+      <div class="pill">📄 Review my CV</div>
+      <div class="pill">🎤 Interview prep</div>
+      <div class="pill">🧭 Career paths</div>
+      <div class="pill">📅 Career fair dates</div>
+    </div>
+  </section>
 
-    <div id="chatBox"></div>
+  <!-- ══ MAIN: SIDEBAR + CHAT ══ -->
+  <div class="main">
 
-    <input type="text" id="message" placeholder="Type your message">
-    <button onclick="sendMessage()">Send</button>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-label">Modules</div>
+      <div class="sidebar-btn active">
+        <div class="icon">💬</div> General Advice
+      </div>
+      <div class="sidebar-btn">
+        <div class="icon">🏢</div> Internship Search
+      </div>
+      <div class="sidebar-btn">
+        <div class="icon">📄</div> CV Builder
+      </div>
+      <div class="sidebar-btn">
+        <div class="icon">🎤</div> Interview Prep
+      </div>
+      <div class="sidebar-btn">
+        <div class="icon">🧭</div> Career Paths
+      </div>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-label">Support</div>
+      <div class="sidebar-btn">
+        <div class="icon">👩‍💼</div> Talk to Counselor
+      </div>
+    </aside>
 
-    <script>
-        function sendMessage() {
-            const username = document.getElementById("username").value.trim();
-            const message = document.getElementById("message").value.trim();
+    <!-- CHAT WINDOW -->
+    <div class="chat-wrap">
+      <div class="chat-card">
 
-            if (username === "" || message === "") {
-                alert("Please enter your username and message.");
-                return;
-            }
+        <!-- Chat header -->
+        <div class="chat-header">
+          <div class="chat-avatar">🎯</div>
+          <div class="chat-header-info">
+            <strong>CareerBot</strong>
+            <span>Student Career &amp; Internship Assistant</span>
+          </div>
+          <div class="chat-status">Online</div>
+        </div>
 
-            fetch("/chat", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    username: username,
-                    message: message
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                const chatBox = document.getElementById("chatBox");
+        <!-- Static message preview -->
+        <div class="chat-messages">
 
-                chatBox.innerHTML += "<p><strong>You:</strong> " + message + "</p>";
-                chatBox.innerHTML += "<p><strong>Bot:</strong> " + data.reply + "</p>";
+          <!-- Bot: welcome -->
+          <div class="msg bot">
+            <div class="msg-avatar">🎯</div>
+            <div>
+              <div class="msg-bubble">
+                Hi there! 👋 I'm <strong>CareerBot</strong>, your personal career assistant. I can help you:
+                <div class="info-card">
+                  <div class="card-title">What I can do</div>
+                  <ul>
+                    <li>Search internship and job opportunities</li>
+                    <li>Review and improve your CV &amp; cover letter</li>
+                    <li>Run mock interview practice sessions</li>
+                    <li>Guide you through career path options</li>
+                    <li>Share upcoming career fair &amp; event info</li>
+                  </ul>
+                </div>
+                <div class="quick-replies">
+                  <span class="qr">Find internships</span>
+                  <span class="qr">Improve my CV</span>
+                  <span class="qr">Mock interview</span>
+                  <span class="qr">Career paths</span>
+                </div>
+              </div>
+              <div class="msg-time">9:00 AM</div>
+            </div>
+          </div>
 
-                document.getElementById("message").value = "";
-            });
-        }
-    </script>
+          <!-- User message -->
+          <div class="msg user">
+            <div>
+              <div class="msg-bubble">Find me a software engineering internship</div>
+              <div class="msg-time">9:01 AM</div>
+            </div>
+          </div>
+
+          <!-- Bot: internship listings -->
+          <div class="msg bot">
+            <div class="msg-avatar">🎯</div>
+            <div>
+              <div class="msg-bubble">
+                Great! Here are some internship opportunities that match your interest:
+                <div class="info-card">
+                  <div class="card-title">Current listings · Software Engineering</div>
+                  <ul>
+                    <li>Software Engineering Intern – Google (Deadline: Mar 15)</li>
+                    <li>Data Science Intern – DBS Bank (Deadline: Mar 22)</li>
+                    <li>Product Management Intern – Grab (Deadline: Apr 1)</li>
+                    <li>UX Design Intern – Shopee (Deadline: Apr 10)</li>
+                  </ul>
+                </div>
+                <div class="quick-replies">
+                  <span class="qr">Apply tips for Google</span>
+                  <span class="qr">Filter by finance</span>
+                  <span class="qr">Show more listings</span>
+                </div>
+              </div>
+              <div class="msg-time">9:01 AM</div>
+            </div>
+          </div>
+
+          <!-- User message -->
+          <div class="msg user">
+            <div>
+              <div class="msg-bubble">Can you also review my CV?</div>
+              <div class="msg-time">9:02 AM</div>
+            </div>
+          </div>
+
+          <!-- Bot: CV tips -->
+          <div class="msg bot">
+            <div class="msg-avatar">🎯</div>
+            <div>
+              <div class="msg-bubble">
+                Of course! Here are the most common CV improvements I recommend for students:
+                <div class="info-card">
+                  <div class="card-title">Top CV improvements</div>
+                  <ul>
+                    <li>Use strong action verbs: 'Led', 'Built', 'Achieved' — not 'Helped'</li>
+                    <li>Quantify achievements — e.g. 'Increased sales by 30%'</li>
+                    <li>Tailor your summary to each job description</li>
+                    <li>Keep it to 1 page unless you have 5+ years of experience</li>
+                  </ul>
+                </div>
+                <div class="quick-replies">
+                  <span class="qr">Upload my CV draft</span>
+                  <span class="qr">Show me a template</span>
+                  <span class="qr">Cover letter tips</span>
+                </div>
+              </div>
+              <div class="msg-time">9:02 AM</div>
+            </div>
+          </div>
+
+        </div><!-- end .chat-messages -->
+
+        <!-- Input area -->
+        <div class="chat-input-wrap">
+          <input
+            type="text"
+            id="username"
+            class="chat-input"
+            placeholder="Username"
+            style="max-width: 130px;"
+          >
+
+          <textarea
+            id="message"
+            class="chat-input"
+            rows="1"
+            placeholder="Ask me anything about your career…"
+          ></textarea>
+
+          <button class="send-btn" onclick="sendMessage()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"/>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- end .main -->
+
+  <!-- ══ STATS ══ -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num">2,400+</div>
+      <div class="stat-label">Internship listings</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">98%</div>
+      <div class="stat-label">Student satisfaction</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">24/7</div>
+      <div class="stat-label">Always available</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">180+</div>
+      <div class="stat-label">Partner employers</div>
+    </div>
+  </div>
+
+  <!-- ══ FEATURE CARDS ══ -->
+  <div class="features">
+    <div class="feat-card">
+      <div class="feat-icon">🔍</div>
+      <h3>Internship Discovery</h3>
+      <p>Browse curated internship listings by industry, role, and location — sourced directly from the Career Centre and partner employers.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">📄</div>
+      <h3>CV &amp; Cover Letter Builder</h3>
+      <p>Get AI-powered feedback on your application materials. Upload your draft and receive actionable, industry-specific suggestions instantly.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🎤</div>
+      <h3>Mock Interview Practice</h3>
+      <p>Practice with real interview questions curated by industry. Get instant feedback on your answers and tips on what recruiters look for.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🧭</div>
+      <h3>Career Path Guidance</h3>
+      <p>Explore career options suited to your major, interests, and strengths — with recommended certifications and skill-building resources.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">📅</div>
+      <h3>Events &amp; Fair Alerts</h3>
+      <p>Stay ahead of application deadlines, career fairs, employer talks, and on-campus recruitment drives — all in one place.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">👩‍💼</div>
+      <h3>Human Counselor Escalation</h3>
+      <p>When you need more personalised help, CareerBot connects you directly to a career counselor — with full conversation context shared.</p>
+    </div>
+  </div>
+
+  <!-- ══ FOOTER ══ -->
+  <footer>
+    <div class="footer-brand">🎯 Career<span class="dot">Bot</span></div>
+    <p>© 2025 CareerBot · Student Career &amp; Internship Assistant</p>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Use</a>
+      <a href="#">Contact Us</a>
+    </div>
+  </footer>
+
+<script>
+  function sendMessage() {
+    const username = document.getElementById("username").value.trim();
+    const message = document.getElementById("message").value.trim();
+    const chatMessages = document.querySelector(".chat-messages");
+
+    if (username === "" || message === "") {
+      alert("Please enter your username and message.");
+      return;
+    }
+
+    fetch("/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        username: username,
+        message: message
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      chatMessages.innerHTML += `
+        <div class="msg user">
+          <div>
+            <div class="msg-bubble">${message}</div>
+          </div>
+        </div>
+      `;
+
+      chatMessages.innerHTML += `
+        <div class="msg bot">
+          <div class="msg-avatar">🎯</div>
+          <div>
+            <div class="msg-bubble">${data.reply}</div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById("message").value = "";
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    });
+  }
+</script>
+
 </body>
 </html>
