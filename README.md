@@ -19,7 +19,7 @@
 ## Project Overview
 
 1. **Builds structured analysis**
-2. **Read internshipdata**
+2. **Read internship data**
 3. **Make suggestion for career intership and simliar intership**
 
 ---
