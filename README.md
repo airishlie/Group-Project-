@@ -11,8 +11,6 @@
 ![Location](https://img.shields.io/badge/Singapore-TR2_2026-bc8cff?style=flat-square&labelColor=161b22)
 ![Team](https://img.shields.io/badge/Team-3-green)
 
-</br>
-
 </div>
 
 ---
