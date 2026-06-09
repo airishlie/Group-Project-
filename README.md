@@ -7,6 +7,7 @@
 <sub>A 10-week coding exercise to create a chat analysis for career prediction for James Cook University Student .</sub>
 
 <br>
+
 ![AI](https://img.shields.io/badge/AI_Website-blue)
 ![Location](https://img.shields.io/badge/Singapore-TR2_2026-bc8cff?style=flat-square&labelColor=161b22)
 ![Team](https://img.shields.io/badge/Team-3-green)
