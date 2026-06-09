@@ -151,5 +151,5 @@ def chat():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5001)
+    app.run(debug=True, port=5002)
 # run this in browser > http://127.0.0.1:5001
