@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign in — InternAI CareerBot</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="auth-layout">
+
+  <!-- ── Brand panel ── -->
+  <div class="panel-brand">
+    <div class="panel-brand-top">
+      <div class="brand-icon lg">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      </div>
+      <span class="brand-name">InternAI CareerBot</span>
+    </div>
+
+    <div class="panel-brand-mid">
+      <div class="brand-tagline">
+        Land your dream<br><span class="highlight">internship</span> with AI.
+      </div>
+      <p class="brand-desc">
+        Powered by Google Gemini — get real-time, personalised career guidance
+        for resumes, interviews, and internship searches in Singapore and beyond.
+      </p>
+    </div>
+
+    <div class="panel-brand-bottom">
+      <div class="stats-row">
+        <div>
+          <div class="stat-num">Gemini</div>
+          <div class="stat-label">AI-powered</div>
+        </div>
+        <div>
+          <div class="stat-num">Real-time</div>
+          <div class="stat-label">Live responses</div>
+        </div>
+        <div>
+          <div class="stat-num">Free</div>
+          <div class="stat-label">Always</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Form panel ── -->
+  <div class="panel-form">
+    <div class="form-card">
+
+      <div class="form-header">
+        <h1>Welcome back</h1>
+        <p>Sign in to continue your internship journey</p>
+      </div>
+
+      <div id="alertBox" class="alert alert-error"></div>
+
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <button class="btn btn-ghost" onclick="demoLogin()">
+          <svg class="g-icon" viewBox="0 0 18 18">
+            <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
+            <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/>
+            <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
+            <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
+          </svg>
+          Continue with Google (Demo)
+        </button>
+      </div>
+
+      <div class="divider">or sign in with email</div>
+
+      <div class="form-fields">
+        <div class="field">
+          <label for="username">Username</label>
+          <div class="field-wrap">
+            <span class="field-icon">
+              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </span>
+            <input type="text" id="username" class="has-icon" placeholder="Enter your username" autocomplete="username">
+          </div>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="field-wrap">
+            <span class="field-icon">
+              <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </span>
+            <input type="password" id="password" class="has-icon" placeholder="Enter your password" style="padding-right:44px" autocomplete="current-password">
+            <button class="toggle-pw" onclick="togglePassword('password', this)" type="button">
+              <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="forgot-row"><a href="#">Forgot password?</a></div>
+      </div>
+
+      <button class="btn btn-primary" id="loginBtn" onclick="handleLogin()">Sign in</button>
+
+      <div class="form-footer">
+        Don't have an account? <a href="/signup">Create one free</a>
+      </div>
+
+      <div class="terms">
+        By signing in you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/utils.js') }}"></script>
+<script>
+  async function handleLogin() {
+    hideAlert('alertBox');
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    if (!username) { showAlert('alertBox', 'Please enter your username.'); return; }
+    if (!password)  { showAlert('alertBox', 'Please enter your password.'); return; }
+
+    const btn = document.getElementById('loginBtn');
+    btn.disabled = true; btn.textContent = 'Signing in…';
+
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ username, password })
+      });
+      const data = await res.json();
+      if (data.success) { window.location.href = '/chat'; }
+      else { showAlert('alertBox', data.error || 'Login failed.'); btn.disabled=false; btn.textContent='Sign in'; }
+    } catch {
+      showAlert('alertBox', 'Connection error. Is the Flask server running?');
+      btn.disabled=false; btn.textContent='Sign in';
+    }
+  }
+
+  function demoLogin() {
+    document.getElementById('username').value = 'demo_student';
+    document.getElementById('password').value = 'demo1234';
+    handleLogin();
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
+</script>
+</body>
+</html>
