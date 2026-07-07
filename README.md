@@ -138,10 +138,10 @@ Use `;` as delimiter. The bot checks these first before calling Gemini.
 
 | # | User Story Title | Priority | Duration | Status | Assigned To |
 |---|------------------|----------|----------|--------|-------------|
-|  **#11** | **Clean Internship Dataset** | 50 | 3 days | **Working / Completed** |  |
-|  **#12** | **Select Useful Internship Columns** | 50 | 2 days | **Working** |  |
-|  **#13** | **Define Chatbot Scope** | 40 | 1 day | **Working** |  |
-|  **#14** | **Prepare Sample User Questions** | 40 | 2 days | **Working** |  |
+|  **#11** | **Clean Internship Dataset** | 50 | 3 days | **Completed** |  
+|  **#12** | **Select Useful Internship Columns** | 50 | 2 days | **Working** | Airishlie |
+|  **#13** | **Define Chatbot Scope** | 40 | 1 day | **Working** | Henry |
+|  **#14** | **Prepare Sample User Questions** | 40 | 2 days | **Working** | Pinky |
 
 ###  TODO Stories - Account System
 
