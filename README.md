@@ -119,7 +119,12 @@ Use `;` as delimiter. The bot checks these first before calling Gemini.
 |  **#3** | **Receive AI Chatbot Reply** | As a JCU student, I want to receive a relevant response to my career or internship question so that I can obtain guidance quickly. | 2 days |
 |  **#4** | **Integrate Gemini API** | As a development team, we want to connect the chatbot backend to the Gemini API so that the chatbot can generate flexible responses. | 3 days |
 |  **#5** | **Record Conversation Data** | As a development team, we want each user interaction to be automatically saved so that we can review user questions and improve the chatbot later. | 2 days |
-|  **#7** | **Create Flask Backend** | As a development team, we want a Flask backend to receive user messages, call the chatbot model, return replies, and save interaction data. | 2 days |
+|  **#6** | **Create Flask Backend** | As a development team, we want a Flask backend to receive user messages, call the chatbot model, return replies, and save interaction data. | 2 days |
+|  **#7** | **Create Chatbot Interface** |As a JCU student, I want a chatbot webpage with a message input box and send button so that I can use the chatbot easily.| 2 days |
+|  **#8** | **Apply Website Styling** |As a JCU student, I want a clear and simple chatbot interface so that the website is easier to use.| 2 days |
+|  **#9** | **Store Conversation Details** |As a development team, we want to record username, user message, response source, status, bot reply, and timestamp so the interaction data is organised.| 1 days |
+|  **#10** | **Create Shared GitHub Repository** As a development team, we want a shared GitHub repository so that we can review, modify, and track the project code together.| 1 days |
+
 
 ## Unfinished Iteration : 
 
