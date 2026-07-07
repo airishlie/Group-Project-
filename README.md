@@ -123,7 +123,7 @@ Use `;` as delimiter. The bot checks these first before calling Gemini.
 |  **#7** | **Create Chatbot Interface** |As a JCU student, I want a chatbot webpage with a message input box and send button so that I can use the chatbot easily.| 2 days |
 |  **#8** | **Apply Website Styling** |As a JCU student, I want a clear and simple chatbot interface so that the website is easier to use.| 2 days |
 |  **#9** | **Store Conversation Details** |As a development team, we want to record username, user message, response source, status, bot reply, and timestamp so the interaction data is organised.| 1 days |
-|  **#10** | **Create Shared GitHub Repository** As a development team, we want a shared GitHub repository so that we can review, modify, and track the project code together.| 1 days |
+|  **#10** | **Create Shared GitHub Repository** |As a development team, we want a shared GitHub repository so that we can review, modify, and track the project code together.| 1 days |
 
 
 ## Unfinished Iteration : 
