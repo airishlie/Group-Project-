@@ -1,5 +1,51 @@
-﻿keyword;category;bot_reply
-hi;greeting;Hello! How can I help you with your career or internship today?
-hello;greeting;Hi! I can help you with internships resumes interviews and career resources.
-resume;career preparation;A good resume should be clear concise and tailored to the internship role.
-internship;internship;You can look for internships through JCU Career Services LinkedIn JobStreet and company websites.
+﻿keyword,category,bot_reply
+hi,greeting,Hello! How can I assist you with internships or career planning today?
+hello,greeting,"Hi! I can help you with internships, resumes, interviews, and career resources."
+resume,career preparation,"A strong resume should highlight your skills, academic achievements, and relevant experiences tailored to the internship role."
+internship,internship,"You can find internships through JCU CareerHub, LinkedIn, and company websites."
+paid internship,internship,"Some internships are paid, while others provide course credit or experience only."
+skills,career preparation,"Employers value communication, teamwork, problem-solving, and technical skills like Excel or Python."
+interview,career preparation,"Prepare by practicing common interview questions, researching the company, and reviewing your resume."
+cover letter,career preparation,A good cover letter should explain why you’re interested in the role and how your skills match the internship.
+deadline,logistics,"Internship application deadlines vary, but most are set early in the semester. Check CareerHub for exact dates."
+international student,logistics,"Yes, international students can apply for internships in Australia, but visa conditions may apply."
+networking,career guidance,"Attend career fairs, connect with alumni, and engage with professionals on LinkedIn to expand your network."
+course credit,logistics,Many internships can count towards course credit if approved by your subject coordinator.
+hours per week,logistics,"Most internships require 10–20 hours per week, depending on the company."
+companies,internship,"Local businesses, NGOs, and multinational firms often hire JCU interns."
+application process,internship,"Applications usually involve submitting a resume, cover letter, and sometimes attending an interview."
+business student,internship,"Business students often intern in finance, marketing, HR, or sustainability roles."
+sustainability,career guidance,"Sustainability internships focus on environmental management, CSR, and green business practices."
+careerhub,internship,CareerHub is JCU’s official platform for internship postings and career resources.
+portfolio,career preparation,"Build a portfolio with projects like business case studies, data analysis, or marketing campaigns."
+AI internship,internship,"AI internships often require Python, machine learning basics, and data analysis skills."
+math for AI,career preparation,"Yes, linear algebra, statistics, and probability are essential for AI-related internships."
+tools,career preparation,"Learn Python, Excel, Jupyter Notebook, GitHub, and basic ML libraries."
+duration,internship,Most internships last between 3 to 6 months.
+career advice,career guidance,"Explore industries aligned with your degree, and seek mentors for guidance."
+jobstreet,internship,"You can find internships on JobStreet, especially in Singapore and Malaysia."
+linkedin,internship,LinkedIn is a great platform to search for internships and connect with recruiters.
+scholarship,logistics,Some internships offer scholarships or stipends to support students financially.
+stipend,internship,A stipend is a fixed allowance some companies provide during internships.
+remote internship,internship,"Remote internships allow you to work online, offering flexibility and global opportunities."
+hybrid internship,internship,Hybrid internships combine on-site and remote work for balanced experience.
+soft skills,career preparation,"Employers value adaptability, teamwork, communication, and problem-solving."
+hard skills,career preparation,"Technical skills like coding, data analysis, and financial modeling are highly valued."
+mock interview,career preparation,Practicing with mock interviews helps you gain confidence and improve responses.
+internship fair,logistics,JCU hosts career and internship fairs where you can meet employers directly.
+internship deadline,logistics,"Deadlines vary, but most are announced at the start of the semester."
+internship requirement,logistics,"Requirements include being enrolled, having a valid visa, and meeting GPA thresholds."
+internship GPA,logistics,"Some internships require a minimum GPA, usually around 5.0 or higher."
+internship report,career preparation,You may need to submit a reflective report at the end of your internship.
+internship supervisor,logistics,Supervisors guide your tasks and evaluate your performance during the internship.
+internship certificate,logistics,Many companies provide a certificate upon completion of the internship.
+internship feedback,career guidance,Feedback helps you identify strengths and areas for improvement.
+internship networking,career guidance,Networking during internships can lead to future job opportunities.
+internship reflection,career preparation,Reflection helps you connect your internship experience to academic learning.
+internship extension,logistics,Some companies allow extensions if both parties agree.
+internship conversion,career guidance,Strong performance can lead to a full-time job offer after your internship.
+internship rejection,career guidance,Rejections are common; use them as learning experiences and apply again.
+internship acceptance,logistics,"Once accepted, confirm details like start date, duration, and responsibilities."
+internship orientation,logistics,"Orientation introduces you to company culture, policies, and expectations."
+internship evaluation,career preparation,"Evaluations assess your skills, contributions, and growth during the internship."
+internship recommendation,career guidance,A recommendation letter from your supervisor can boost future applications.
