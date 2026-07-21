@@ -274,8 +274,8 @@ Iteration 2 uses test-driven development for the following areas:
 | Team Member | Main Responsibility |
 |---|---|
 | Pinky | Create Account and Sign In frontend pages — completed |
-| Airish Yacob Lie | Flask account routes and `users.csv` integration |
-| Henry | Dataset preparation, test questions, testing support, and documentation |
+| Airish Yacob Lie | Flask account routes and `users.csv` integration - completed |
+| Henry | Dataset preparation, test questions, testing support, and documentation - complted |
 
 ---
 
