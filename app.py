@@ -229,6 +229,23 @@ def chat_page():
         return render_template("login.html")
     return render_template("chat.html", username=session["username"])
 
+@app.route("/api/login", methods=["POST"])
+def api_login():
+    data = request.get_json()
+
+    username = (data.get("username") or "").strip()
+    password = (data.get("password") or "").strip()
+
+    if not username or not password:
+        return jsonify({"error": "Username and password are required."}), 400
+
+    # Simple demo login for now.
+    # User Story 17 will later validate this from users.csv.
+    session["username"] = username
+    session["session_id"] = str(uuid.uuid4())
+    session["history"] = []
+
+    return jsonify({"success": True, "username": username})
 
 @app.route("/api/signup", methods=["POST"])
 def api_signup():
@@ -262,20 +279,6 @@ def api_signup():
     session["session_id"] = str(uuid.uuid4())
     session["history"] = []
 
-    return jsonify({"success": True, "username": username})
-
-
-@app.route("/api/signup", methods=["POST"])
-def api_signup():
-    data = request.get_json()
-    username = (data.get("username") or "").strip()
-    email    = (data.get("email") or "").strip()
-    password = (data.get("password") or "").strip()
-    if not username or not email or not password:
-        return jsonify({"error": "All fields are required."}), 400
-    session["username"] = username
-    session["session_id"] = str(uuid.uuid4())
-    session["history"] = []
     return jsonify({"success": True, "username": username})
 
 
