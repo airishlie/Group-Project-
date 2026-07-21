@@ -19,6 +19,7 @@ app.secret_key = os.environ.get("SECRET_KEY", "internai-secret-2025")
 BASE_DIR         = os.path.dirname(os.path.abspath(__file__))
 BOT_DATA_FILE    = os.path.join(BASE_DIR, "data", "bot_responses.csv")
 LOG_FILE         = os.path.join(BASE_DIR, "data", "conversation_log.csv")
+USER_FILE        = os.path.join(BASE_DIR, "data", "users.csv")
 EDA_SCRIPT       = os.path.join(BASE_DIR, "data", "our_first_internship_sgd.py")
 
 # ── Google Gemini client ─────────────────────────────────────
@@ -165,6 +166,51 @@ def save_conversation(username, session_id, user_message, matched_keyword, statu
             "timestamp": timestamp
         })
 
+# ── User account CSV ──────────────────────────────────────────
+def ensure_user_file():
+    os.makedirs(os.path.dirname(USER_FILE), exist_ok=True)
+
+    if not os.path.exists(USER_FILE):
+        with open(USER_FILE, "w", newline="", encoding="utf-8") as f:
+            f.write("firstName;lastName;email;username;password;agree\n")
+
+
+def user_exists(username, email):
+    ensure_user_file()
+
+    with open(USER_FILE, "r", newline="", encoding="utf-8-sig") as f:
+        reader = csv.DictReader(f, delimiter=";")
+
+        for row in reader:
+            existing_username = (row.get("username") or "").strip().lower()
+            existing_email = (row.get("email") or "").strip().lower()
+
+            if existing_username == username.lower():
+                return "Username already exists."
+            if existing_email == email.lower():
+                return "Email already exists."
+
+    return None
+
+
+def save_user_account(first_name, last_name, email, username, password, agree):
+    ensure_user_file()
+
+    with open(USER_FILE, "a", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(
+            f,
+            fieldnames=["firstName", "lastName", "email", "username", "password", "agree"],
+            delimiter=";"
+        )
+
+        writer.writerow({
+            "firstName": first_name,
+            "lastName": last_name,
+            "email": email,
+            "username": username,
+            "password": password,
+            "agree": agree
+        })
 
 # ── Routes ───────────────────────────────────────────────────
 @app.route("/")
@@ -184,17 +230,38 @@ def chat_page():
     return render_template("chat.html", username=session["username"])
 
 
-@app.route("/api/login", methods=["POST"])
-def api_login():
+@app.route("/api/signup", methods=["POST"])
+def api_signup():
     data = request.get_json()
+
+    first_name = (data.get("firstName") or "").strip()
+    last_name  = (data.get("lastName") or "").strip()
+    name       = (data.get("name") or "").strip()
+
     username = (data.get("username") or "").strip()
+    email    = (data.get("email") or "").strip()
     password = (data.get("password") or "").strip()
-    if not username or not password:
-        return jsonify({"error": "Username and password are required."}), 400
-    # Simple demo auth — replace with real auth in production
+    agree    = str(data.get("agree") or "yes").strip()
+
+    # If frontend sends full name instead of firstName/lastName
+    if name and not first_name:
+        name_parts = name.split(" ", 1)
+        first_name = name_parts[0]
+        last_name = name_parts[1] if len(name_parts) > 1 else ""
+
+    if not first_name or not username or not email or not password:
+        return jsonify({"error": "All fields are required."}), 400
+
+    existing_error = user_exists(username, email)
+    if existing_error:
+        return jsonify({"error": existing_error}), 400
+
+    save_user_account(first_name, last_name, email, username, password, agree)
+
     session["username"] = username
     session["session_id"] = str(uuid.uuid4())
     session["history"] = []
+
     return jsonify({"success": True, "username": username})
 
 
