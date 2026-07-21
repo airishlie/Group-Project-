@@ -297,6 +297,8 @@ Iteration 2 uses test-driven development for the following areas:
 | **28** | Add Password Visibility Icon | 30 | 1 day | Optional |
 | **29** | Add Password Strength Indicator | 30 | 2 days | Optional |
 | **30** | Explore RAG or a Self-Hosted LLM | 10 | 4 days | Optional |
+| **31** | Redirect User After Account Creation | 40 | 1 day | TODO |
+| **32** | Test Chatbot on Different Devices | 40 | 2 days | TODO |
 
 ### Recommended Iteration 3 Team Split
 
