@@ -16,15 +16,21 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "internai-secret-2025")
 
 # ── File paths ──────────────────────────────────────────────
-BASE_DIR         = os.path.dirname(os.path.abspath(__file__))
-BOT_DATA_FILE    = os.path.join(BASE_DIR, "data", "bot_responses.csv")
-LOG_FILE         = os.path.join(BASE_DIR, "data", "conversation_log.csv")
-USER_FILE        = os.path.join(BASE_DIR, "data", "users.csv")
-EDA_SCRIPT       = os.path.join(BASE_DIR, "data", "our_first_internship_sgd.py")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(BASE_DIR, "data")
+
+# Create data folder automatically if it does not exist
+os.makedirs(DATA_DIR, exist_ok=True)
+
+BOT_DATA_FILE = os.path.join(DATA_DIR, "bot_responses.csv")
+LOG_FILE      = os.path.join(DATA_DIR, "conversation_log.csv")
+USER_FILE     = os.path.join(DATA_DIR, "users.csv")
+EDA_SCRIPT    = os.path.join(DATA_DIR, "our_first_internship_sgd.py")
 
 # ── Google Gemini client ─────────────────────────────────────
-#  Set your API key: export GEMINI_API_KEY="your-key-here"
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "АQ.Аb8RN6lwVlуraU7_zvMp1R9wnEРD_gwSvRТYpkYQqYm5oDtY9Q")
+# Store the key in an environment variable. Never hard-code API keys here.
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
+
 client = genai.Client(api_key=GEMINI_API_KEY) if GEMINI_API_KEY else None
 
 SYSTEM_PROMPT = """You are CareerBot, a friendly and knowledgeable career and internship 
@@ -142,6 +148,8 @@ def get_next_conversation_no():
 
 
 def save_conversation(username, session_id, user_message, matched_keyword, status, process, bot_reply):
+    os.makedirs(DATA_DIR, exist_ok=True)
+
     conversation_no = get_next_conversation_no()
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     file_exists = os.path.exists(LOG_FILE)
@@ -348,7 +356,7 @@ def clear_history():
 if __name__ == "__main__":
     print("=" * 55)
     print("  InternAI CareerBot — Flask Server")
-    print("  http://127.0.0.1:5002")
+    print(" http://127.0.0.1:5002")
     if not GEMINI_API_KEY:
         print("  ⚠  GEMINI_API_KEY not set — AI responses disabled")
     print("=" * 55)
