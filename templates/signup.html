@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create account — InternAI CareerBot</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="auth-layout">
+
+  <!-- ── Brand panel ── -->
+  <div class="panel-brand">
+    <div class="panel-brand-top">
+      <div class="brand-icon lg">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      </div>
+      <span class="brand-name">InternAI CareerBot</span>
+    </div>
+
+    <div class="panel-brand-mid">
+      <div class="brand-tagline">
+        Everything you need<br>to get <span class="highlight">hired</span>.
+      </div>
+      <p class="brand-desc">Join students using Gemini AI to land competitive internships — faster and smarter.</p>
+    </div>
+
+    <div class="panel-brand-bottom">
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="feature-ico">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
+          <div>
+            <h4>Smart internship discovery</h4>
+            <p>AI-tailored opportunities based on your profile and goals</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-ico">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div>
+            <h4>Resume & cover letter AI</h4>
+            <p>Documents that pass ATS and impress recruiters</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-ico">
+            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div>
+            <h4>Interview coach (Gemini)</h4>
+            <p>Practice with real questions and get instant feedback</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Form panel ── -->
+  <div class="panel-form">
+    <div class="form-card">
+
+      <div class="form-header">
+        <h1>Create your account</h1>
+        <p>Free forever. No credit card needed.</p>
+      </div>
+
+      <div id="alertBox" class="alert alert-error"></div>
+
+      <div class="form-fields">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="field">
+            <label for="firstName">First name</label>
+            <input type="text" id="firstName" placeholder="Alex" autocomplete="given-name">
+          </div>
+          <div class="field">
+            <label for="lastName">Last name</label>
+            <input type="text" id="lastName" placeholder="Lee" autocomplete="family-name">
+          </div>
+        </div>
+        <div class="field">
+          <label for="email">Email address</label>
+          <div class="field-wrap">
+            <span class="field-icon">
+              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </span>
+            <input type="email" id="email" class="has-icon" placeholder="you@university.edu" autocomplete="email">
+          </div>
+        </div>
+        <div class="field">
+          <label for="username">Username</label>
+          <div class="field-wrap">
+            <span class="field-icon">
+              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </span>
+            <input type="text" id="username" class="has-icon" placeholder="Choose a username" autocomplete="username">
+          </div>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="field-wrap">
+            <span class="field-icon">
+              <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </span>
+            <input type="password" id="password" class="has-icon" placeholder="Create a password"
+              style="padding-right:44px"
+              oninput="checkStrength(this.value,'str','strLabel')"
+              autocomplete="new-password">
+            <button class="toggle-pw" onclick="togglePassword('password', this)" type="button">
+              <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <div class="strength-bar">
+            <div class="strength-seg" id="str1"></div>
+            <div class="strength-seg" id="str2"></div>
+            <div class="strength-seg" id="str3"></div>
+            <div class="strength-seg" id="str4"></div>
+          </div>
+          <div class="strength-label" id="strLabel"></div>
+        </div>
+        <label class="checkbox-row">
+          <input type="checkbox" id="agree">
+          I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+        </label>
+      </div>
+
+      <button class="btn btn-primary" id="signupBtn" onclick="handleSignup()">Create account</button>
+
+      <div class="form-footer">
+        Already have an account? <a href="/">Sign in</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/utils.js') }}"></script>
+<script>
+  async function handleSignup() {
+    hideAlert('alertBox');
+    const first    = document.getElementById('firstName').value.trim();
+    const last     = document.getElementById('lastName').value.trim();
+    const email    = document.getElementById('email').value.trim();
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    const agree    = document.getElementById('agree').checked;
+
+    if (!first || !last)         { showAlert('alertBox', 'Please enter your full name.'); return; }
+    if (!email || !email.includes('@')) { showAlert('alertBox', 'Please enter a valid email address.'); return; }
+    if (!username)               { showAlert('alertBox', 'Please choose a username.'); return; }
+    if (password.length < 8)     { showAlert('alertBox', 'Password must be at least 8 characters.'); return; }
+    if (!agree)                  { showAlert('alertBox', 'Please agree to the Terms of Service.'); return; }
+
+    const btn = document.getElementById('signupBtn');
+    btn.disabled = true; btn.textContent = 'Creating account…';
+
+    try {
+      const res = await fetch('/api/signup', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ username, email, password, name: first + ' ' + last })
+      });
+      const data = await res.json();
+      if (data.success) { window.location.href = '/chat'; }
+      else { showAlert('alertBox', data.error || 'Signup failed.'); btn.disabled=false; btn.textContent='Create account'; }
+    } catch {
+      showAlert('alertBox', 'Connection error. Is the Flask server running?');
+      btn.disabled=false; btn.textContent='Create account';
+    }
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Enter') handleSignup(); });
+</script>
+</body>
+</html>
