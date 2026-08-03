@@ -7,10 +7,13 @@
 from flask import Flask, render_template, request, jsonify, session
 from google import genai
 from google.genai import types
+from dotenv import load_dotenv
 import csv
 from datetime import datetime
 import os
 import uuid
+
+load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "internai-secret-2025")
@@ -200,6 +203,19 @@ def user_exists(username, email):
 
     return None
 
+def find_user(username):
+    ensure_user_file()
+
+    with open(USER_FILE, "r", newline="", encoding="utf-8-sig") as f:
+        reader = csv.DictReader(f, delimiter=";")
+
+        for row in reader:
+            existing_username = (row.get("username") or "").strip().lower()
+            if existing_username == username.lower():
+                return row
+
+    return None
+
 
 def save_user_account(first_name, last_name, email, username, password, agree):
     ensure_user_file()
@@ -239,7 +255,7 @@ def chat_page():
 
 @app.route("/api/login", methods=["POST"])
 def api_login():
-    data = request.get_json()
+    data = request.get_json(silent=True) or {}
 
     username = (data.get("username") or "").strip()
     password = (data.get("password") or "").strip()
@@ -247,11 +263,21 @@ def api_login():
     if not username or not password:
         return jsonify({"error": "Username and password are required."}), 400
 
-    # Simple demo login for now.
-    # User Story 17 will later validate this from users.csv.
+    user = find_user(username)
+
+    if not user:
+        return jsonify({"error": "Account not found. Please create an account first."}), 404
+
+    stored_password = (user.get("password") or "").strip()
+
+    if stored_password != password:
+        return jsonify({"error": "Incorrect password."}), 401
+
+    session.clear()
     session["username"] = username
     session["session_id"] = str(uuid.uuid4())
     session["history"] = []
+    session.pop("job_flow", None)
 
     return jsonify({"success": True, "username": username})
 
@@ -283,9 +309,11 @@ def api_signup():
 
     save_user_account(first_name, last_name, email, username, password, agree)
 
+    session.clear()
     session["username"] = username
     session["session_id"] = str(uuid.uuid4())
     session["history"] = []
+    session.pop("job_flow", None)
 
     return jsonify({"success": True, "username": username})
 
@@ -350,6 +378,7 @@ def api_history():
 @app.route("/api/clear_history", methods=["POST"])
 def clear_history():
     session["history"] = []
+    session.pop("job_flow", None)
     return jsonify({"success": True})
 
 
