@@ -123,11 +123,18 @@
     }
   }
 
-  function demoLogin() {
-    document.getElementById('username').value = 'demo_student';
-    document.getElementById('password').value = 'demo1234';
+  const DEMO_ACCOUNTS = {
+    pinky: 'pinky1234',
+    arish: 'arish1234',
+    henry: 'henry1234'
+  };
+
+  function demoLogin(username) {
+    document.getElementById('username').value = username;
+    document.getElementById('password').value = DEMO_ACCOUNTS[username] || '';
     handleLogin();
   }
+
 
   document.addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
 </script>
