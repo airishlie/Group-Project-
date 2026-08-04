@@ -1,0 +1,8 @@
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.env
+.DS_Store
+data/conversation_log.csv
+data/users.csv
