@@ -1,47 +1,122 @@
+<div align="center">
+
+<sub>ASE CP3407 &nbsp;·&nbsp; TR2 2026 &nbsp;·&nbsp; Singapore &nbsp;·&nbsp; Group 4</sub>
+
 # InternAI CareerBot
 
-![Group](https://img.shields.io/badge/Group-4-2563EB)
-![Subject](https://img.shields.io/badge/Subject-ASE%20CP3407-0F766E)
-![Progress](https://img.shields.io/badge/Progress-Week%2010-7C3AED)
-![Framework](https://img.shields.io/badge/Framework-Flask-000000?logo=flask&logoColor=white)
-![Project](https://img.shields.io/badge/Project-InternAI-1F2937)
-![Language](https://img.shields.io/badge/Language-Python-3776AB?logo=python&logoColor=white)
-![Status](https://img.shields.io/badge/Status-Active%20Development-F59E0B)
-![LLM Models](https://img.shields.io/badge/LLM%20Models-2-8B5CF6)
+<sub>Dataset-grounded career guidance, guided job matching, dual-LLM fallback, and focused application support.</sub>
 
-InternAI CareerBot is a Flask-based internship and career support application developed for **ASE CP3407** by **Group 4**. The system combines a structured response dataset, a guided internship-matching workflow, account management, conversation logging, and two large language model providers.
+<br>
 
-The application is designed for university students who need career guidance, internship recommendations, resume and interview support, networking advice, and role-specific application assistance.
+![Group](https://img.shields.io/badge/Group-4-2563eb?style=flat-square&labelColor=161b22)
+![Subject](https://img.shields.io/badge/Subject-ASE_CP3407-0f766e?style=flat-square&labelColor=161b22)
+![Progress](https://img.shields.io/badge/Progress-Week_10-58a6ff?style=flat-square&labelColor=161b22&logo=issuu)
+![Status](https://img.shields.io/badge/Status-Active_Development-3fb950?style=flat-square&labelColor=161b22&logo=statuspage)
+![Project](https://img.shields.io/badge/Project-InternAI-d29922?style=flat-square&labelColor=161b22)
+![Backend](https://img.shields.io/badge/Backend-Python_%7C_Flask-3776ab?style=flat-square&labelColor=161b22&logo=flask)
+![Language](https://img.shields.io/badge/Language-Python-3776ab?style=flat-square&labelColor=161b22&logo=python&logoColor=white)
+![LLMs](https://img.shields.io/badge/LLM_Models-2-bc8cff?style=flat-square&labelColor=161b22&logo=openrouter)
 
-## Current Project Status
+</div>
 
-The project is in **Week 10** and remains under active development.
+---
 
-| Component | Status |
-|---|---|
-| Flask backend | Implemented |
-| Chatbot user interface | Implemented |
-| Account creation interface | Implemented |
-| Sign-in interface | Implemented |
-| CSV-based account storage | Implemented for development use |
-| Sign-in validation | Implemented |
-| Response dataset integration | Implemented |
-| Conversation logging | Implemented |
-| Internship dataset cleaning | Implemented |
-| Internship dataset connection | Implemented |
-| Guided job-matching workflow | Implemented |
-| Job ranking and top-result display | Implemented |
-| Focused application guidance | Implemented |
-| Open-question handling during job flow | Implemented |
-| OpenRouter integration | Implemented |
-| Gemini fallback support | Implemented as an optional secondary provider |
-| Live job-market API | Not implemented |
-| Production-grade authentication | Not implemented |
-| Automated and cross-device testing | In progress |
+## What This Project Does
+
+InternAI CareerBot is an internship and career support application developed by Group 4 for ASE CP3407.
+
+The system combines a structured response dataset, a guided job-matching workflow, account management, conversation logging, and two large language model providers. It is designed to help university students explore internships, identify compatible opportunities, prepare applications, and ask open-ended career questions.
+
+The current application can:
+
+- Answer known career questions from `bot_responses.csv`
+- Detect natural job-search requests
+- Collect a user's program or major, top three strengths, and experience level
+- Rank internship records from the project dataset
+- Display compatible roles and supporting match reasons
+- Generate role-focused application guidance
+- Answer separate questions without losing the active job workflow
+- Use OpenRouter as the primary LLM provider
+- Use Google Gemini as an optional secondary fallback
+- Save account and conversation information in CSV files for development use
+
+> **Week 10 Status:** The Flask application, account pages, CSV account workflow, response dataset, internship matching, job-selection workflow, application guidance, OpenRouter integration, optional Gemini fallback, and workflow restoration are available. Broader testing, production security, and live vacancy integration remain in progress.
+
+---
+
+## Quick Start
+
+### Requirements
+
+- Python 3.11 or later
+- `pip`
+- An OpenRouter API key for the primary AI fallback
+- An optional Gemini API key for secondary fallback behavior
+
+### Setup
+
+```bash
+cd AI
+
+py -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+On macOS or Linux:
+
+```bash
+cd AI
+
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+### Environment Configuration
+
+Create a private `.env` file in the same directory as `app.py`.
+
+```env
+SECRET_KEY=your-long-random-flask-secret
+
+OPENROUTER_API_KEY=your-openrouter-api-key
+OPENROUTER_MODEL=nvidia/nemotron-3-ultra-550b-a55b:free
+OPENROUTER_SITE_URL=
+OPENROUTER_APP_TITLE=InternAI CareerBot
+OPENROUTER_TIMEOUT_SECONDS=60
+
+GEMINI_API_KEY=your-optional-gemini-api-key
+GEMINI_MODEL=gemini-2.5-flash
+```
+
+Generate a Flask secret in PowerShell:
+
+```powershell
+py -c "import secrets; print(secrets.token_hex(32))"
+```
+
+Never commit real API keys to GitHub.
+
+### Run the Application
+
+```bash
+python app.py
+```
+
+Open:
+
+```text
+http://127.0.0.1:5002
+```
+
+A successful startup reports the number of loaded response rows, loaded job rows, and configured LLM providers.
+
+---
 
 ## Core Workflow
 
-The primary job workflow is:
+The guided workflow is:
 
 ```text
 Program or Major
@@ -55,7 +130,7 @@ Compatible Job or Internship Results
 Focused Application Guidance
 ```
 
-Example conversation:
+Example:
 
 ```text
 User: Is there any job for computer science?
@@ -69,14 +144,14 @@ Bot: What is your experience level?
 
 User: Beginner
 
-Bot: Displays the five strongest matching records from the internship dataset.
+Bot: Displays the strongest matching internship records.
 
 User: apply 3
 
-Bot: Generates a role-focused application message and CV priorities.
+Bot: Generates a focused application message and CV priorities.
 ```
 
-Supported workflow commands include:
+Supported workflow commands:
 
 ```text
 apply 1
@@ -90,151 +165,63 @@ restart jobs
 cancel jobs
 ```
 
-The application stores the exact five job records currently displayed, allowing users to select any visible result reliably.
+The application stores the exact job IDs currently displayed, allowing users to select results 1 through 5 reliably.
+
+---
 
 ## Message Routing
 
-InternAI processes each message in the following order:
+Each user message is processed in this order:
 
-1. Detect whether the user has asked a separate question during an active job workflow.
-2. Answer that separate question without deleting or consuming the saved workflow state.
+1. Detect a separate question during an active job workflow.
+2. Answer the separate question without deleting the saved workflow state.
 3. Continue the active workflow when the message is a valid answer for the current stage.
-4. Start a new guided workflow when the user asks to find, recommend, search for, or apply for a job or internship.
+4. Start a new workflow when the user asks to find, recommend, search for, or apply for a role.
 5. Return a confident response from `bot_responses.csv`.
 6. Use OpenRouter for unmatched open-ended career questions.
-7. Use Gemini as an optional secondary fallback when OpenRouter is unavailable and Gemini is configured.
-8. Return a safe error or related saved response when no AI provider is available.
+7. Use Gemini as an optional secondary fallback when OpenRouter is unavailable.
+8. Return a safe error or related saved response when no AI provider can respond.
 
-This routing keeps the structured job workflow separate from general career guidance.
+### Workflow Restoration
 
-### Open Questions During an Active Workflow
-
-A user can ask an unrelated career question without losing progress.
-
-Example:
+A separate question does not cancel the job workflow.
 
 ```text
-Bot: Reply apply 1 to apply 5.
+Bot: Reply apply 1 through apply 5.
 
 User: How long should an internship normally last?
 
-Bot: Answers the duration question.
+Bot: Answers the question.
 
-Bot: Your job matches are still available. Reply apply 1, apply 2,
-     more jobs, restart jobs, or cancel jobs.
+Bot: Your job matches are still available.
+     Reply apply 1, apply 2, more jobs, restart jobs, or cancel jobs.
 
 User: apply 4
 ```
 
-The workflow is preserved in the Flask session and resumes at the same stage.
+The workflow remains stored in the Flask session and resumes at the same stage.
 
-## Main Features
+---
 
-### Career and Internship Chatbot
+## Main Capabilities
 
-The chatbot supports:
+| Capability | Current Implementation |
+|---|---|
+| Career and internship chat | Response dataset with LLM fallback |
+| Natural job-search detection | Pattern and major detection |
+| Guided profile collection | Program, strengths, and experience |
+| Internship matching | Weighted ranking against the CSV dataset |
+| Result selection | Visible results 1 through 5 |
+| Application support | Focused message and CV guidance |
+| Open questions during workflow | Answered without losing progress |
+| Account creation | CSV-based development workflow |
+| Sign-in validation | CSV lookup and password comparison |
+| Conversation logging | CSV-based logging |
+| Primary LLM | OpenRouter |
+| Secondary LLM | Google Gemini |
+| Live job-market feed | Not implemented |
 
-- Internship and job discovery
-- Resume and CV preparation
-- Cover-letter guidance
-- Behavioral and technical interview preparation
-- Salary and stipend questions
-- Networking and alumni engagement
-- Professional certification planning
-- Career progression and mobility
-- Skills development
-- Application-focused guidance
-
-### Guided Job Matching
-
-The matcher ranks stored internship records using:
-
-- Program or major
-- Top three strengths
-- Experience level
-- Internship title
-- Dataset category
-- Search terms
-- Relevant skill hints
-- Record completeness
-
-The displayed results can include:
-
-- Internship or job title
-- Company
-- Compatibility label
-- Match explanation
-- Category
-- Location
-- Work mode
-- Start date
-- Duration
-- Compensation
-
-### Grounded Response Dataset
-
-`bot_responses.csv` contains predefined career responses. The application checks this dataset before calling an LLM.
-
-The matcher supports:
-
-- Whole-word and whole-phrase matching
-- Query normalization
-- Common aliases
-- Token overlap
-- Similarity scoring
-- Specific-keyword prioritization
-- Generic-response suppression when a direct explanation is more appropriate
-
-### LLM Providers
-
-The system supports two LLM providers:
-
-1. **OpenRouter** as the primary provider
-2. **Google Gemini** as an optional secondary fallback
-
-Default OpenRouter model:
-
-```text
-nvidia/nemotron-3-ultra-550b-a55b:free
-```
-
-Default Gemini model:
-
-```text
-gemini-2.5-flash
-```
-
-The saved response dataset and guided job workflow always take priority over both LLM providers.
-
-### Account System
-
-The development account system supports:
-
-- Account creation
-- Duplicate username validation
-- Duplicate email validation
-- CSV-based user storage
-- Sign-in validation
-- Account-not-found responses
-- Incorrect-password responses
-- Session initialization
-- Logout
-
-The CSV account system is intended only for development and coursework demonstration.
-
-### Conversation Logging
-
-Interactions can be stored in `data/conversation_log.csv` with fields such as:
-
-- Conversation number
-- Session ID
-- Username
-- User message
-- Matched keyword
-- Status
-- Processing source
-- Bot reply
-- Timestamp
+---
 
 ## Technology Stack
 
@@ -248,10 +235,12 @@ Interactions can be stored in `data/conversation_log.csv` with fields such as:
 | Response storage | CSV |
 | Account storage | CSV |
 | Conversation logging | CSV |
-| Dataset processing | Python |
+| Internship dataset | CSV |
 | Environment configuration | python-dotenv |
-| HTTP client | requests |
+| HTTP requests | requests |
 | Version control | Git and GitHub |
+
+---
 
 ## Project Structure
 
@@ -286,68 +275,89 @@ AI/
 └── iteration-2/
 ```
 
-Some runtime files may be created or updated automatically when the application runs.
+Some CSV files are created or updated while the application is running.
 
-## Installation
+---
 
-### Windows
+## Internship Matching
 
-From the project folder:
+The ranking system considers:
 
-```bat
-py -m venv .venv
-.venv\Scripts\activate
-pip install -r requirements.txt
+- Program or major
+- Top three strengths
+- Experience level
+- Internship title
+- Dataset category
+- Search terms
+- Skill-related hints
+- Record completeness
+
+Displayed results can include:
+
+- Job or internship title
+- Company
+- Compatibility label
+- Match explanation
+- Category
+- Location
+- Work mode
+- Start date
+- Duration
+- Compensation
+
+The supplied internship dataset is a stored project dataset, not a live vacancy feed.
+
+---
+
+## Response Dataset
+
+`bot_responses.csv` provides grounded answers before an LLM is called.
+
+The matcher supports:
+
+- Whole-word and whole-phrase matching
+- Query normalization
+- Common aliases
+- Token overlap
+- Similarity scoring
+- Specific-keyword prioritization
+- Generic-response suppression when a direct explanation is more appropriate
+
+Example CSV structure:
+
+```csv
+keyword;category;bot_reply
+resume;career preparation;A strong resume should clearly present your skills, education, and relevant experience.
+interview;career preparation;Research the organization and prepare examples using the STAR method.
 ```
 
-### macOS or Linux
+---
 
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
+## LLM Configuration
 
-## Environment Configuration
+### OpenRouter
 
-Create a private `.env` file in the same folder as `app.py`.
+OpenRouter is the primary provider for unmatched open-ended questions.
 
-```env
-SECRET_KEY=your-long-random-flask-secret
-
-OPENROUTER_API_KEY=your-openrouter-api-key
-OPENROUTER_MODEL=nvidia/nemotron-3-ultra-550b-a55b:free
-OPENROUTER_SITE_URL=
-OPENROUTER_APP_TITLE=InternAI CareerBot
-OPENROUTER_TIMEOUT_SECONDS=60
-
-GEMINI_API_KEY=your-optional-gemini-api-key
-GEMINI_MODEL=gemini-2.5-flash
-```
-
-Generate a Flask secret on Windows PowerShell:
-
-```powershell
-py -c "import secrets; print(secrets.token_hex(32))"
-```
-
-The Gemini configuration is optional. When it is not configured, the application continues to use the response dataset, guided workflow, and OpenRouter.
-
-Never commit real API keys to a public repository.
-
-## Running the Application
-
-```bat
-python app.py
-```
-
-Open:
+Default model:
 
 ```text
-http://127.0.0.1:5002
+nvidia/nemotron-3-ultra-550b-a55b:free
 ```
 
-A successful startup should report the number of loaded response rows and job rows and identify which LLM providers are configured.
+### Google Gemini
+
+Gemini is an optional secondary fallback.
+
+Default model:
+
+```text
+gemini-2.5-flash
+```
+
+The structured response dataset and guided job workflow always take priority over both LLM providers.
+
+---
 
 ## Diagnostics
 
@@ -363,21 +373,23 @@ The endpoint reports:
 - The selected OpenRouter model
 - Whether Gemini is configured
 - The selected Gemini model
-- Number of loaded response rows
-- Number of loaded job rows
+- Number of response rows loaded
+- Number of job rows loaded
 - Current routing order
 
-The endpoint does not return API keys.
+The endpoint does not expose API keys.
 
-## Testing the Application
+---
 
-### Response Dataset
+## Testing
+
+### Saved Response
 
 ```text
 What is an internship stipend?
 ```
 
-Expected result:
+Expected process:
 
 ```text
 Response dataset
@@ -389,13 +401,13 @@ Response dataset
 How can I explain a failed university project positively during an interview?
 ```
 
-Expected result:
+Expected process:
 
 ```text
 OpenRouter fallback
 ```
 
-If OpenRouter fails and Gemini is configured, Gemini may provide the secondary response.
+If OpenRouter fails and Gemini is configured, Gemini may provide the response.
 
 ### Guided Job Flow
 
@@ -403,20 +415,20 @@ If OpenRouter fails and Gemini is configured, Gemini may provide the secondary r
 Is there any job for computer science?
 ```
 
-Expected behavior:
+Expected sequence:
 
 ```text
 Detect Computer Science
 → Ask for three strengths
 → Ask for experience level
-→ Display matching dataset records
+→ Display matching records
 → Accept apply 1 through apply 5
 ```
 
 ### Workflow Interruption
 
 ```text
-Bot: Select a job using apply 1 through apply 5.
+Bot: Select a result using apply 1 through apply 5.
 User: Do employers care about university grades?
 ```
 
@@ -424,16 +436,21 @@ Expected behavior:
 
 ```text
 Answer the question
-→ Preserve the visible job results
+→ Preserve the displayed results
 → Remind the user how to continue
 ```
 
-## Development Iterations
+---
 
-### Iteration 1: Basic AI Chatbot Prototype
+## Development Progress
 
-**Period:** May 19, 2026 to June 6, 2026  
-**Capacity:** 45 person-days
+| Iteration | Main Goal | Current Outcome |
+|---|---|---|
+| Iteration 1 | Basic AI chatbot prototype | Completed |
+| Iteration 2 | Account system and dataset preparation | Core work completed |
+| Iteration 3 | Internship search and recommendation | Core workflow implemented; testing continues |
+
+### Iteration 1
 
 Main outcomes:
 
@@ -444,9 +461,7 @@ Main outcomes:
 - Shared GitHub repository
 - Initial styling and interaction flow
 
-### Iteration 2: Account System and Dataset Preparation
-
-**Capacity:** 30 person-days
+### Iteration 2
 
 Main outcomes:
 
@@ -459,23 +474,33 @@ Main outcomes:
 - Sign-in validation
 - Account-not-found handling
 
-### Iteration 3: Internship Search and Recommendation
-
-**Capacity:** 30 person-days
+### Iteration 3
 
 Current outcomes:
 
-- Internship dataset connected to the Flask backend
-- Natural job-search request detection
+- Internship dataset connected to Flask
+- Natural job-search detection
 - Program, strength, and experience collection
-- Job ranking and top-result display
+- Job ranking and result display
 - Result selection
 - Focused application guidance
-- Reliability notice for stored job records
-- Privacy and data-handling considerations
-- Open questions during active job workflows
+- Reliability notice for stored records
+- Open questions during active workflows
 
-Remaining work includes broader testing, production security improvements, and optional live vacancy integration.
+Remaining work includes broader testing, production security, and optional live vacancy integration.
+
+---
+
+## Documentation
+
+| Document | Purpose |
+|---|---|
+| [JOB_FLOW_README.md](JOB_FLOW_README.md) | Detailed routing, workflow, job selection, and interruption behavior |
+| [LATEST_UPDATE.md](LATEST_UPDATE.md) | Summary of recent implementation changes |
+| [iteration-1](iteration-1/) | Iteration 1 planning and working documentation |
+| [iteration-2](iteration-2/) | Iteration 2 planning and working documentation |
+
+---
 
 ## Team Responsibilities
 
@@ -485,52 +510,50 @@ Remaining work includes broader testing, production security improvements, and o
 | Airish Yacob Lie | Flask account routes and `users.csv` integration |
 | Henry | Dataset preparation, sample questions, testing support, job-flow development, and documentation |
 
+---
+
 ## Current Limitations
 
-- The internship CSV is a stored dataset and is not a live vacancy feed.
-- Job availability must be verified before applying.
-- The dataset may not contain complete descriptions or current application URLs.
-- The CSV account system is not appropriate for production deployment.
-- Password storage must be replaced with secure hashing before production use.
-- CSV files are not suitable for concurrent multi-user production traffic.
-- Free LLM endpoints may experience rate limits, timeouts, or temporary unavailability.
-- AI responses may contain incomplete or inaccurate information.
-- Current public-market vacancies require a separate maintained job-provider API.
+- The internship CSV is not a live vacancy feed.
+- Users must verify whether a listing is still active.
+- Some records may not contain complete descriptions or application URLs.
+- The CSV account system is not suitable for production use.
+- Password storage must be replaced with secure hashing before deployment.
+- CSV files are not appropriate for concurrent production traffic.
+- Free LLM endpoints may experience rate limits, timeouts, or temporary outages.
+- AI-generated answers may contain incomplete or inaccurate information.
+- Current public vacancies require a separate maintained job-provider API.
 
-## Planned Improvements
+---
 
-- Replace CSV account storage with a database
-- Hash and salt passwords
-- Add stronger server-side validation
-- Expand automated testing
-- Add continuous integration
-- Improve accessibility and responsive behavior
-- Add live job-provider integration
-- Improve ranking transparency
-- Add administrator tools for reviewing response and job datasets
-- Explore retrieval-augmented generation
-- Evaluate self-hosted LLM options
-- Improve privacy controls and data-retention rules
+## Contributing
 
-## Priority Scale
+Development work should be completed on the assigned branch.
 
-| Priority | Meaning |
-|---:|---|
-| 50 | Most important |
-| 40 | High priority |
-| 30 | Medium priority |
-| 20 | Low priority |
-| 10 | Least important or optional |
+Before pushing:
+
+```bash
+git status
+git add <changed-files>
+git commit -m "Describe the change"
+git push origin <branch-name>
+```
+
+Do not commit `.env`, active API keys, private account records, or confidential conversation data to a public repository.
+
+---
 
 ## Security Notes
 
-- Do not commit `.env` or real API keys.
-- Revoke any key that has been exposed in Git history or screenshots.
-- Do not use plaintext passwords in a production system.
-- Avoid publishing real user records or conversation history in a public repository.
-- Use a database, password hashing, access controls, and secure deployment settings before production use.
-- Do not use Flask debug mode in a production deployment.
+- Never commit real API keys.
+- Revoke any key exposed in Git history or screenshots.
+- Do not use plaintext passwords in production.
+- Replace CSV account storage with a database and password hashing before deployment.
+- Do not use Flask debug mode in production.
+- Apply access controls and data-retention rules before handling real user information.
 
-## Disclaimer
+---
 
-InternAI CareerBot is an academic software project developed for ASE CP3407. It is intended for coursework, demonstration, testing, and educational use only. The application does not provide professional career, legal, financial, employment, or immigration advice. Internship and job records may be incomplete, outdated, or no longer available, and users must verify all vacancies, requirements, deadlines, compensation details, and application instructions directly with the relevant employer or official source. AI-generated responses may contain errors or omissions and should not be treated as guaranteed, authoritative, or official information. The development team is not responsible for decisions, applications, losses, privacy incidents, or other outcomes resulting from the use of this software.
+## Educational Disclaimer
+
+This repository is an educational project developed for ASE CP3407. InternAI CareerBot is intended for coursework, demonstration, testing, and educational use only. It does not provide professional career, legal, financial, employment, or immigration advice. Internship and job records may be incomplete, outdated, or no longer available, and users must verify all vacancies, requirements, deadlines, compensation details, and application instructions directly with the relevant employer or official source. AI-generated responses may contain errors or omissions and should not be treated as guaranteed, authoritative, or official information. The development team is not responsible for decisions, applications, losses, privacy incidents, or other outcomes resulting from the use of this software.
