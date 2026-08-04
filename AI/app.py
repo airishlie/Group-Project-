@@ -2,7 +2,9 @@
 #  InternAI — Flask Backend
 #  - Uses bot_responses.csv for grounded career answers
 #  - Uses the internship dataset for guided job matching
-#  - Uses OpenRouter (NVIDIA Nemotron) as an optional fallback
+#  - Uses OpenRouter (NVIDIA Nemotron) as the primary AI fallback
+#  - Uses Google Gemini as an optional secondary AI fallback
+#  - Preserves and restores the guided job flow around open questions
 #  - Logs conversations to data/conversation_log.csv
 # ============================================================
 
@@ -11,8 +13,16 @@ from __future__ import annotations
 from flask import Flask, render_template, request, jsonify, session
 import requests
 from dotenv import load_dotenv
+
+try:
+    from google import genai
+    from google.genai import types as gemini_types
+except ImportError:  # Gemini is optional; OpenRouter can run without this package.
+    genai = None
+    gemini_types = None
 import csv
 from datetime import datetime
+import hmac
 from difflib import SequenceMatcher
 import os
 import re
@@ -61,19 +71,37 @@ try:
 except ValueError:
     OPENROUTER_TIMEOUT_SECONDS = 60
 
+# Gemini is optional and is used only when the response dataset has no confident
+# answer and OpenRouter is unavailable or returns an error.
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash").strip()
+GEMINI_CLIENT = (
+    genai.Client(api_key=GEMINI_API_KEY)
+    if GEMINI_API_KEY and genai is not None
+    else None
+)
+
 SYSTEM_PROMPT = """You are CareerBot, a friendly and knowledgeable career and internship
 support assistant for university students in Singapore and beyond.
 
-Your expertise covers internships, resumes, cover letters, interviews, salary and
-stipend expectations, networking, career planning, and skill development.
+Your expertise covers:
+- Finding and applying for internships and entry-level jobs
+- Student resumes, CVs, and cover letters
+- Behavioural and technical interview preparation
+- Salary and stipend expectations
+- Networking, LinkedIn, career planning, and skill development
 
 Important rules:
 - Be concise, warm, and actionable.
 - Use markdown formatting when helpful.
-- Answer unmatched open-ended career questions naturally and directly.
-- Ground answers in the supplied response examples when examples are provided.
-- Do not invent official deadlines, application links, job requirements, vacancies, or dataset records.
+- Answer the user's actual message naturally, including open-ended questions that do not match a pre-written intent pattern.
+- Career and internship guidance is your speciality, but you may answer other reasonable general questions briefly.
+- Ground answers in supplied response examples when examples are provided.
+- Do not invent official deadlines, application links, job requirements, active vacancies, or dataset records.
+- When official university information is required, recommend checking the university career portal.
 - When information is uncertain or current availability must be checked, say so clearly.
+- Make clear that stored dataset records are not guaranteed live vacancies.
+- Never continue, restart, select from, or alter a guided job flow yourself; the Flask application manages that state.
 - Keep answers focused and under 300 words unless more detail is requested.
 """
 
@@ -203,7 +231,7 @@ BOT_RESPONSES = load_bot_responses()
 
 
 def find_response_matches(user_message: str, limit: int = 3) -> list[tuple[float, dict]]:
-    """Return exact and semantically related response rows first."""
+    """Return exact and semantically related response rows, best first."""
     normalised = normalise_text(user_message)
     query_tokens = tokenise(normalised)
     ranked: list[tuple[float, dict]] = []
@@ -244,20 +272,16 @@ def resolve_grounded_response(user_message: str):
     high_confidence = best_score >= 0.48
     best_keyword = best_row.get("_keyword_normalised", "")
 
-    # The generic "internship" row in the CSV is a search tip, not a
-    # definition. For questions such as "What is an internship?" or
-    # "Can you explain an internship?", let OpenRouter generate the direct
-    # explanation instead of returning a keyword-only but irrelevant answer.
-    bypass_generic_reply = (
-        (is_explanation_request(user_message) or looks_like_general_question(user_message))
-        and best_keyword in GENERIC_RESPONSE_KEYWORDS
-    )
+    # Generic rows such as "internship" are too broad to answer a complete
+    # user message safely. Let the AI fallback answer the actual question instead of
+    # forcing a keyword-only search tip. Specific CSV topics still take priority.
+    bypass_generic_reply = best_keyword in GENERIC_RESPONSE_KEYWORDS
 
     if (exact or high_confidence) and not bypass_generic_reply:
         return best_row.get("bot_reply", ""), best_row.get("keyword", ""), []
 
     # Do not send an irrelevant generic CSV answer as grounding context for a
-    # definition request. OpenRouter should answer the question naturally.
+    # definition request. The AI fallback should answer the question naturally.
     if bypass_generic_reply:
         return None, best_row.get("keyword", ""), []
 
@@ -603,7 +627,13 @@ def format_job_matches(flow: dict, offset: int = 0) -> str:
     job_ids = flow.get("job_ids", [])
     selected_ids = job_ids[offset:offset + 5]
     if not selected_ids:
+        flow["visible_job_ids"] = []
         return "I do not have more matching jobs in this result set. Type **restart jobs** to create a new profile."
+
+    # Persist the exact five records shown on screen. Selection commands are
+    # resolved against this list rather than recalculating from an old offset.
+    flow["visible_job_ids"] = list(selected_ids)
+    flow["offset"] = offset
 
     lines = [
         "### Compatible jobs from the job-market dataset",
@@ -634,7 +664,7 @@ def format_job_matches(flow: dict, offset: int = 0) -> str:
             "",
         ])
 
-    lines.append("Reply **apply 1**, **apply 2**, etc. to create a focused application for that role, or type **more jobs**.")
+    lines.append("Reply **apply 1**, **apply 2**, **apply 3**, **apply 4**, or **apply 5** to create a focused application for that role, or type **more jobs**.")
     lines.append("\n*These are records from your uploaded job dataset, not a live vacancy feed. Verify that each listing is still active before applying.*")
     return "\n".join(lines)
 
@@ -738,18 +768,53 @@ def start_job_flow(initial_message: str | None = None) -> tuple[str, str, str]:
     )
 
 
-def parse_job_selection(message: str) -> int | None:
-    """Parse only an explicit result choice such as ``apply 2`` or ``2``.
+SELECTION_WORDS = {
+    "one": 1,
+    "first": 1,
+    "two": 2,
+    "second": 2,
+    "three": 3,
+    "third": 3,
+    "four": 4,
+    "fourth": 4,
+    "five": 5,
+    "fifth": 5,
+}
 
-    A full-string match is intentional. It prevents unrelated messages such as
-    ``I have 2 years of experience`` from accidentally selecting job number 2.
+
+def parse_job_selection(message: str) -> int | None:
+    """Parse one explicit result choice from the five jobs currently shown.
+
+    Supported examples include ``3``, ``apply 3``, ``apply for job 4``,
+    ``choose option 5``, ``the third one``, and ``pick the fifth job``.
+    Full-string matching prevents a sentence such as ``I have 3 years of
+    experience`` from accidentally choosing job 3.
     """
     text = normalise_text(message)
-    match = re.fullmatch(
-        r"(?:(?:apply|job|option|number|choose)\s*)?([1-5])",
+    text = re.sub(r"\bplease\b", " ", text)
+    text = re.sub(r"\s+", " ", text).strip(" .")
+
+    digit_match = re.fullmatch(
+        r"(?:(?:apply|select|choose|pick)(?:\s+(?:for|to))?\s*)?"
+        r"(?:(?:the|job|role|option|number)\s*)*"
+        r"#?([1-5])(?:st|nd|rd|th)?"
+        r"(?:\s*(?:job|role|option|one))?",
         text,
     )
-    return int(match.group(1)) if match else None
+    if digit_match:
+        return int(digit_match.group(1))
+
+    word_match = re.fullmatch(
+        r"(?:(?:apply|select|choose|pick)(?:\s+(?:for|to))?\s*)?"
+        r"(?:(?:the|job|role|option|number)\s*)*"
+        r"(one|first|two|second|three|third|four|fourth|five|fifth)"
+        r"(?:\s*(?:job|role|option|one))?",
+        text,
+    )
+    if word_match:
+        return SELECTION_WORDS[word_match.group(1)]
+
+    return None
 
 
 GENERAL_QUESTION_PREFIXES = (
@@ -786,49 +851,93 @@ def is_job_flow_command(message: str) -> bool:
 
 
 def is_valid_experience_answer(message: str) -> bool:
-    """Check whether a message can safely be consumed as experience level."""
+    """Accept a direct experience-level answer, not a question containing a duration."""
     text = normalise_text(message)
     if not text:
         return False
 
-    recognised_terms = (
-        "no experience", "none", "zero", "never worked", "novice",
-        "beginner", "entry level", "entry", "fresh graduate", "fresher",
-        "student", "intermediate", "some experience", "advanced",
-        "senior", "experienced",
+    level_pattern = (
+        r"(?:(?:i am|im|my level is|experience level is)\s+)?"
+        r"(?:no experience|none|zero|never worked|novice|beginner|entry level|entry|"
+        r"fresh graduate|fresher|student|intermediate|some experience|advanced|senior|experienced)"
     )
-    if any(term in text for term in recognised_terms):
+    if re.fullmatch(level_pattern, text):
         return True
 
     number = r"(?:\d+(?:\.\d+)?|one|two|three|four|five|six|seven|eight|nine|ten)"
-    return bool(re.search(rf"\b{number}\s*(?:months?|years?)\b", text))
+    duration_pattern = (
+        rf"(?:(?:i have|ive got|about|around|approximately|roughly|with)\s+)?"
+        rf"{number}\s*(?:months?|years?)"
+        rf"(?:\s+of\s+(?:work\s+)?experience)?"
+    )
+    return bool(re.fullmatch(duration_pattern, text))
+
+
+def is_probable_major_answer(message: str) -> bool:
+    """Accept a concise field of study, not a sentence or open question."""
+    raw = (message or "").strip()
+    text = normalise_text(raw)
+    words = text.split()
+    if not text or "?" in raw or "\n" in raw:
+        return False
+    if len(raw) > 100 or len(words) > 8:
+        return False
+    if looks_like_general_question(message):
+        return False
+    if parse_job_selection(message) is not None or is_job_flow_command(message):
+        return False
+    return True
+
+
+def looks_like_strengths_attempt(message: str) -> bool:
+    """Recognise a short list intended for the strengths field."""
+    raw = (message or "").strip()
+    if not raw or "?" in raw or len(raw) > 180:
+        return False
+    if looks_like_general_question(message):
+        return False
+    has_separator = bool(re.search(r"[,;/\n]", raw) or re.search(r"\b(?:and|plus)\b", raw.lower()))
+    return has_separator and len(raw.split()) <= 24
+
+
+def should_consume_as_job_flow_input(user_message: str, flow: dict) -> bool:
+    """Return True only when the message is a valid input for the current stage.
+
+    This reverses the old design. The application no longer needs a hard-coded
+    catalogue of every possible question. Only recognised flow answers are
+    consumed; every other message is treated as an open question and answered
+    through the CSV/AI-provider route while the flow remains saved.
+    """
+    stage = flow.get("stage")
+    text = normalise_text(user_message)
+
+    # Cancel/restart are valid at every stage. Job paging and result selection
+    # are valid only after results are displayed.
+    if text in {"cancel", "cancel jobs", "stop", "exit", "restart", "restart job", "restart jobs", "start over"}:
+        return True
+
+    # Question-like language always receives an answer first, even if it also
+    # contains a number, a major, or three technologies.
+    if looks_like_general_question(user_message):
+        return False
+
+    if stage == "major":
+        return is_probable_major_answer(user_message)
+    if stage == "strengths":
+        return len(split_strengths(user_message)) >= 3 or looks_like_strengths_attempt(user_message)
+    if stage == "experience":
+        return is_valid_experience_answer(user_message)
+    if stage == "jobs":
+        return is_job_flow_command(user_message)
+    return False
 
 
 def should_pause_job_flow_for_question(user_message: str, flow: dict) -> bool:
-    """Pause job matching when the user asks an unrelated normal question.
-
-    Valid answers for the current stage still continue the questionnaire. A
-    separate question is answered through the response dataset/OpenRouter while
-    the existing job-flow state remains in the session.
-    """
+    """Answer any non-flow message separately and preserve the saved flow."""
     stage = flow.get("stage")
     if stage not in {"major", "strengths", "experience", "jobs"}:
         return False
-
-    if is_job_flow_command(user_message):
-        return False
-
-    # Accept valid form answers before checking for question-like wording.
-    if stage == "strengths" and len(split_strengths(user_message)) >= 3:
-        return False
-    if stage == "experience" and is_valid_experience_answer(user_message):
-        return False
-
-    # A major normally consists of a short field value, not a question.
-    if stage == "major" and not looks_like_general_question(user_message):
-        return False
-
-    return is_explanation_request(user_message) or looks_like_general_question(user_message)
+    return not should_consume_as_job_flow_input(user_message, flow)
 
 
 def job_flow_resume_message(flow: dict) -> str:
@@ -856,7 +965,7 @@ def job_flow_resume_message(flow: dict) -> str:
 
 
 def answer_standard_question(user_message: str, history: list):
-    """Answer through CSV grounding first, then OpenRouter fallback."""
+    """Answer through CSV grounding, OpenRouter, then optional Gemini."""
     grounded_reply, matched_kw, references = resolve_grounded_response(user_message)
     if grounded_reply:
         return (
@@ -866,7 +975,36 @@ def answer_standard_question(user_message: str, history: list):
             matched_kw,
         )
 
-    bot_reply, status, process = get_openrouter_reply(user_message, history, references)
+    bot_reply, status, process = get_ai_fallback_reply(
+        user_message,
+        history,
+        references,
+    )
+    return bot_reply, status, process, matched_kw
+
+
+def answer_interruption_question(user_message: str):
+    """Answer a message independently without allowing job-flow context drift."""
+    grounded_reply, matched_kw, references = resolve_grounded_response(user_message)
+    if grounded_reply:
+        return (
+            grounded_reply,
+            "response_dataset",
+            f"Response dataset: '{matched_kw}'",
+            matched_kw,
+        )
+
+    isolated_message = (
+        f"{user_message}\n\n"
+        "Answer only this current message. Do not continue, restart, select from, "
+        "or modify any job-matching questionnaire. The application will restore "
+        "that workflow separately after your answer."
+    )
+    bot_reply, status, process = get_ai_fallback_reply(
+        isolated_message,
+        [],
+        references,
+    )
     return bot_reply, status, process, matched_kw
 
 
@@ -932,8 +1070,9 @@ def handle_job_flow(user_message: str):
         flow["job_ids"] = [job["_job_id"] for job in matches]
         flow["offset"] = 0
         flow["stage"] = "jobs"
+        reply = format_job_matches(flow, 0)
         session["job_flow"] = flow
-        return format_job_matches(flow, 0), "job_flow", "Job flow: dataset matches"
+        return reply, "job_flow", "Job flow: dataset matches"
 
     if stage == "jobs":
         if text in {"more", "more job", "more jobs", "next", "next jobs"}:
@@ -941,11 +1080,14 @@ def handle_job_flow(user_message: str):
             if next_offset >= len(flow.get("job_ids", [])):
                 next_offset = 0
             flow["offset"] = next_offset
+            reply = format_job_matches(flow, next_offset)
             session["job_flow"] = flow
-            return format_job_matches(flow, next_offset), "job_flow", "Job flow: more dataset matches"
+            return reply, "job_flow", "Job flow: more dataset matches"
 
         if text in {"back", "back to jobs", "show jobs", "show matches"}:
-            return format_job_matches(flow, int(flow.get("offset", 0))), "job_flow", "Job flow: dataset matches"
+            reply = format_job_matches(flow, int(flow.get("offset", 0)))
+            session["job_flow"] = flow
+            return reply, "job_flow", "Job flow: dataset matches"
 
         selection = parse_job_selection(user_message)
         if selection is None:
@@ -955,10 +1097,19 @@ def handle_job_flow(user_message: str):
                 "Job flow: choose a job",
             )
 
-        offset = int(flow.get("offset", 0))
-        visible_ids = flow.get("job_ids", [])[offset:offset + 5]
+        visible_ids = flow.get("visible_job_ids") or []
+        if not visible_ids:
+            offset = int(flow.get("offset", 0))
+            visible_ids = flow.get("job_ids", [])[offset:offset + 5]
+            flow["visible_job_ids"] = list(visible_ids)
+            session["job_flow"] = flow
         if selection > len(visible_ids):
-            return "That job number is not shown. Choose a number from 1 to 5.", "job_flow", "Job flow: choose a job"
+            return (
+                f"Job {selection} is not currently displayed. Choose one of the "
+                f"{len(visible_ids)} visible results.",
+                "job_flow",
+                "Job flow: choose a job",
+            )
         job = JOBS_BY_ID.get(visible_ids[selection - 1])
         if not job:
             return "That dataset record could not be loaded. Please choose another job.", "error", "Job flow: missing record"
@@ -1137,6 +1288,171 @@ def get_openrouter_reply(user_message: str, history: list, references: list | No
         return message, "error", f"OpenRouter error: {str(exc)[:80]}"
 
 
+def get_gemini_reply(
+    user_message: str,
+    history: list,
+    references: list | None = None,
+):
+    """Use Gemini as the optional secondary AI provider."""
+    if not GEMINI_API_KEY:
+        return (
+            "Gemini is not configured.",
+            "error",
+            "Gemini not configured",
+        )
+    if GEMINI_CLIENT is None or gemini_types is None:
+        return (
+            "Gemini is configured, but the `google-genai` package is unavailable. "
+            "Install the project requirements and restart Flask.",
+            "error",
+            "Gemini SDK unavailable",
+        )
+
+    contents = []
+    for turn in history[-10:]:
+        user_text = (turn.get("user") or "").strip()
+        bot_text = (turn.get("bot") or "").strip()
+        if user_text:
+            contents.append(gemini_types.Content(
+                role="user",
+                parts=[gemini_types.Part(text=user_text)],
+            ))
+        if bot_text:
+            contents.append(gemini_types.Content(
+                role="model",
+                parts=[gemini_types.Part(text=bot_text)],
+            ))
+
+    if references:
+        examples = "\n".join(
+            f"- Topic: {item['keyword']} | Category: {item['category']} | "
+            f"Saved answer: {item['reply']}"
+            for item in references
+        )
+        final_message = (
+            f"User question: {user_message}\n\n"
+            "No saved response matched with enough confidence. Use these related "
+            "examples only as grounding context. Answer the actual question directly "
+            "and ignore unrelated details.\n"
+            f"{examples}"
+        )
+    else:
+        final_message = (
+            f"User question: {user_message}\n\n"
+            "This message did not match the saved response dataset confidently. "
+            "Answer it naturally under the system rules."
+        )
+
+    contents.append(gemini_types.Content(
+        role="user",
+        parts=[gemini_types.Part(text=final_message)],
+    ))
+
+    try:
+        response = GEMINI_CLIENT.models.generate_content(
+            model=GEMINI_MODEL,
+            contents=contents,
+            config=gemini_types.GenerateContentConfig(
+                system_instruction=SYSTEM_PROMPT,
+                temperature=0.35 if references else 0.65,
+                max_output_tokens=700,
+            ),
+        )
+        reply = (getattr(response, "text", None) or "").strip()
+        if not reply:
+            raise RuntimeError("Gemini returned an empty response")
+        process = (
+            f"Gemini fallback ({GEMINI_MODEL}) · related dataset context"
+            if references
+            else f"Gemini fallback ({GEMINI_MODEL})"
+        )
+        return reply, "answered", process
+    except Exception as exc:
+        print(f"[ERROR] Gemini API: {exc}")
+        error_text = str(exc).lower()
+        if "429" in error_text or "rate" in error_text and "limit" in error_text:
+            message = "Gemini's rate limit has been reached. Please wait and try again later."
+        elif "401" in error_text or "403" in error_text or "api key" in error_text:
+            message = "Gemini could not authenticate. Check `GEMINI_API_KEY` in `.env`, then restart Flask."
+        else:
+            message = "Gemini could not generate a response right now."
+        return message, "error", f"Gemini error: {str(exc)[:80]}"
+
+
+def get_ai_fallback_reply(
+    user_message: str,
+    history: list,
+    references: list | None = None,
+):
+    """Use OpenRouter first, then Gemini, then a related saved response.
+
+    The response dataset and guided job flow are handled before this function.
+    This function combines the two AI-provider versions without allowing either
+    provider to replace the deterministic job-flow state.
+    """
+    references = references or []
+    related_response_candidate = None
+    provider_errors: list[str] = []
+
+    if OPENROUTER_API_KEY:
+        openrouter_result = get_openrouter_reply(
+            user_message,
+            history,
+            references,
+        )
+        reply, status, process = openrouter_result
+        if status == "answered":
+            return openrouter_result
+        if status == "response_dataset":
+            # OpenRouter may fall back to a related CSV row after a timeout or
+            # provider error. Save it, but still give Gemini a chance first.
+            related_response_candidate = openrouter_result
+        else:
+            provider_errors.append(process)
+    else:
+        provider_errors.append("OpenRouter not configured")
+
+    if GEMINI_API_KEY:
+        gemini_result = get_gemini_reply(
+            user_message,
+            history,
+            references,
+        )
+        reply, status, process = gemini_result
+        if status == "answered":
+            if OPENROUTER_API_KEY:
+                process += " · OpenRouter unavailable"
+            return reply, status, process
+        provider_errors.append(process)
+    else:
+        provider_errors.append("Gemini not configured")
+
+    if related_response_candidate is not None:
+        reply, status, process = related_response_candidate
+        return reply, status, process + " · AI providers unavailable"
+
+    if references:
+        best = references[0]
+        return (
+            best["reply"],
+            "response_dataset",
+            f"Related response fallback: '{best['keyword']}' · AI providers unavailable",
+        )
+
+    configured_hint = (
+        "Add `OPENROUTER_API_KEY` or `GEMINI_API_KEY` to the project's `.env` file "
+        "and restart Flask."
+        if not OPENROUTER_API_KEY and not GEMINI_API_KEY
+        else "Please try again in a moment."
+    )
+    details = "; ".join(provider_errors[:2])
+    return (
+        f"I could not generate an AI response right now. {configured_hint}",
+        "error",
+        f"AI fallback unavailable: {details}",
+    )
+
+
 # ── Conversation logger ──────────────────────────────────────
 def get_next_conversation_no():
     if not os.path.exists(LOG_FILE):
@@ -1187,6 +1503,17 @@ def user_exists(username, email):
     return None
 
 
+def find_user(username: str):
+    """Return the saved user row for a username, or None when not found."""
+    ensure_user_file()
+    with open(USER_FILE, "r", newline="", encoding="utf-8-sig") as file:
+        for row in csv.DictReader(file, delimiter=";"):
+            saved_username = (row.get("username") or "").strip().lower()
+            if saved_username == username.strip().lower():
+                return row
+    return None
+
+
 def save_user_account(first_name, last_name, email, username, password, agree):
     ensure_user_file()
     with open(USER_FILE, "a", newline="", encoding="utf-8") as file:
@@ -1228,9 +1555,24 @@ def api_login():
     data = request.get_json(silent=True) or {}
     username = (data.get("username") or "").strip()
     password = (data.get("password") or "").strip()
+
     if not username or not password:
         return jsonify({"error": "Username and password are required."}), 400
 
+    user = find_user(username)
+    if not user:
+        return jsonify({
+            "error": "Account not found. Please create an account first."
+        }), 404
+
+    stored_password = (user.get("password") or "").strip()
+    if not hmac.compare_digest(
+        stored_password.encode("utf-8"),
+        password.encode("utf-8"),
+    ):
+        return jsonify({"error": "Incorrect password."}), 401
+
+    session.clear()
     session["username"] = username
     session["session_id"] = str(uuid.uuid4())
     session["history"] = []
@@ -1261,6 +1603,7 @@ def api_signup():
         return jsonify({"error": existing_error}), 400
 
     save_user_account(first_name, last_name, email, username, password, agree)
+    session.clear()
     session["username"] = username
     session["session_id"] = str(uuid.uuid4())
     session["history"] = []
@@ -1293,8 +1636,8 @@ def api_chat():
     # 1. A separate normal question temporarily pauses, but does not cancel or
     #    consume, the active questionnaire. The saved profile can continue next.
     if active_flow and should_pause_job_flow_for_question(user_message, active_flow):
-        bot_reply, status, process, matched_kw = answer_standard_question(
-            user_message, history
+        bot_reply, status, process, matched_kw = answer_interruption_question(
+            user_message
         )
         bot_reply += f"\n\n---\n{job_flow_resume_message(active_flow)}"
         process += " · job flow paused for separate question"
@@ -1310,8 +1653,8 @@ def api_chat():
         bot_reply, status, process = start_job_flow(user_message)
         matched_kw = "job_search"
 
-    # 4. Answer known questions through CSV grounding, then use OpenRouter for
-    #    unmatched or open-ended questions.
+    # 4. Answer known questions through CSV grounding, then use OpenRouter and
+    #    optional Gemini for unmatched or open-ended questions.
     else:
         bot_reply, status, process, matched_kw = answer_standard_question(
             user_message, history
@@ -1338,18 +1681,23 @@ def api_chat():
 
 @app.route("/api/ai_status")
 def api_ai_status():
-    """Small diagnostics endpoint; never exposes the API key."""
+    """Small diagnostics endpoint; never exposes either API key."""
     return jsonify({
         "openrouter_configured": bool(OPENROUTER_API_KEY),
         "openrouter_model": OPENROUTER_MODEL,
+        "gemini_configured": bool(GEMINI_API_KEY),
+        "gemini_sdk_available": genai is not None,
+        "gemini_model": GEMINI_MODEL,
         "response_rows": len(BOT_RESPONSES),
         "job_rows": len(JOBS),
         "routing": [
-            "separate normal question during an active job flow",
+            "any non-flow message is answered separately while the active job flow is preserved",
             "active job flow",
             "new job-search flow",
             "confident response-dataset match",
-            "OpenRouter fallback for unmatched open-ended questions",
+            "OpenRouter primary fallback for unmatched open-ended questions",
+            "Gemini secondary fallback when OpenRouter is unavailable",
+            "related saved response when both AI providers are unavailable",
         ],
     })
 
@@ -1378,8 +1726,14 @@ if __name__ == "__main__":
     print(f"  Loaded response rows: {len(BOT_RESPONSES)}")
     print(f"  Loaded job rows: {len(JOBS)}")
     if not OPENROUTER_API_KEY:
-        print("  OpenRouter fallback disabled: add OPENROUTER_API_KEY to .env")
+        print("  OpenRouter primary fallback disabled: add OPENROUTER_API_KEY to .env")
     else:
-        print(f"  OpenRouter fallback enabled: {OPENROUTER_MODEL}")
+        print(f"  OpenRouter primary fallback enabled: {OPENROUTER_MODEL}")
+    if not GEMINI_API_KEY:
+        print("  Gemini secondary fallback disabled: add GEMINI_API_KEY to .env if needed")
+    elif genai is None:
+        print("  Gemini key found, but google-genai is not installed")
+    else:
+        print(f"  Gemini secondary fallback enabled: {GEMINI_MODEL}")
     print("=" * 60)
     app.run(debug=True, port=5002)

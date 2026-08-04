@@ -1,8 +1,23 @@
+# Virtual environment
 .venv/
 venv/
+
+# Python cache
 __pycache__/
 *.py[cod]
+*.pyc
+
+# Environment variables / API keys
 .env
-.DS_Store
-data/conversation_log.csv
+.env.*
+
+# PyCharm
+.idea/
+
+# Local generated data
 data/users.csv
+data/conversation_log.csv
+
+# OS files
+.DS_Store
+Thumbs.db

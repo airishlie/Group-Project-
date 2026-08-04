@@ -1,6 +1,5 @@
 # Latest update
 
-This build was updated from the uploaded OpenRouter/Nemotron project.
 
 Changes applied:
 

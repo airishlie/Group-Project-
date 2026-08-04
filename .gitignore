@@ -1,0 +1,8 @@
+
+AI/.env
+AI/.venv/
+AI/.idea/
+AI/__pycache__/
+AI/**/*.pyc
+AI/data/users.csv
+AI/data/conversation_log.csv
