@@ -1,0 +1,713 @@
+conversation_no,session_id,username,user_message,matched_keyword,status,process,bot_reply,timestamp
+1,c55e9d31-7706-48ed-8709-cd8d07716fba,Tobi,What is an intership?,,error,OpenRouter not configured,"I could not find a matching saved response, and OpenRouter is not configured yet. Add `OPENROUTER_API_KEY` to the project's `.env` file, restart Flask, and try again.",2026-08-03 06:04:52
+2,de0ce823-7b12-4c29-ada9-614871c8d6b9,Tobi,What is an intership?,,error,OpenRouter not configured,"I could not find a matching saved response, and OpenRouter is not configured yet. Add `OPENROUTER_API_KEY` to the project's `.env` file, restart Flask, and try again.",2026-08-03 06:06:52
+3,ae8e4743-7a17-478c-b81e-ca03350834b2,Tobi,What is an intership?,,answered,OpenRouter fallback (nvidia/nemotron-3-ultra-550b-a55b:free),"An **internship** is a short-term, structured work experience offered by an organization to students or recent graduates. It’s designed to give you practical exposure to a specific industry, role, or company culture while you’re still studying or just starting out.
+
+**Key characteristics:**
+- **Duration:** Typically 8–24 weeks (often during semester breaks or as a semester-long module).
+- **Focus:** Learning and contribution—you apply classroom knowledge to real projects, build skills, and understand workplace dynamics.
+- **Compensation:** Can be paid (monthly stipend or hourly wage), unpaid, or for academic credit. In Singapore, many internships offer a monthly allowance (commonly SGD 600–1,200 for undergraduates).
+- **Outcome:** Strong internships often lead to full-time graduate offers, valuable references, and a clearer career direction.
+
+**Why it matters:**
+- Bridges theory and practice.
+- Builds your professional network.
+- Strengthens your resume with concrete achievements.
+- Helps you test-fit a role or industry before committing long-term.
+
+**Next steps:**
+1. Check your university’s career portal (e.g., NUS TalentConnect, NTU CareerLink, SMU Career Centre) for vetted listings.
+2. Tailor your resume to highlight relevant projects, CCA leadership, and coursework.
+3. Prepare a 30-second “elevator pitch” for networking events and interviews.
+
+Want tips on finding or applying for internships in a specific field?",2026-08-03 06:14:53
+4,01cc6878-f390-4011-922c-e57fe477625e,Tobi,Find internships for me in software engineering or data science in Singapore,job_search,job_flow,Job flow: major detected → top three strengths,"Yes — I can match you with roles from the job dataset. I understood your **programme/major as Software Engineering**.
+
+**Step 2 of 3: What are your top three strengths?** Separate them with commas.
+
+Example: Python, data analysis, problem-solving.
+
+Type **restart jobs** if the detected programme/major is incorrect.",2026-08-03 06:17:06
+5,01cc6878-f390-4011-922c-e57fe477625e,Tobi,"Problem-solving, JavaScript, Communication",job_flow,job_flow,Job flow: experience level,"What is your **experience level**?
+
+You can answer: no experience, beginner/entry level, intermediate, or advanced.",2026-08-03 06:17:52
+6,01cc6878-f390-4011-922c-e57fe477625e,Tobi,Beginner,job_flow,job_flow,Job flow: dataset matches,"### Compatible jobs from the job-market dataset
+Profile used: **Software Engineering** · strengths: **problem-solving, javascript, communication** · experience: **Beginner / entry level**
+
+**1. Software Engineering — Quantom Research Capital**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Noida · On-site
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 166 /month
+
+**2. Embedded Software Engineering — Atlanta Systems Private Limited**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Delhi · On-site
+- Start: Immediately · Duration: 3 Months · Compensation: S$ 200-333 /month
+
+**3. Mobile/Web App Software Engineering — Bempu Health**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Bangalore · On-site
+- Start: Immediately · Duration: 1 Month · Compensation: S$ 200 /month
+
+**4. Software Development Engineering (Web) — WeSeSo Solutions Private Limited**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Work From Home · Work From Home
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 67-200 /month
+
+**5. Software Testing Engineering — AICAN Private Limited**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Mumbai · On-site
+- Start: Immediately · Duration: 3 Months · Compensation: S$ 67-133 /month
+
+Reply **apply 1**, **apply 2**, etc. to create a focused application for that role, or type **more jobs**.
+
+*These are records from your uploaded job dataset, not a live vacancy feed. Verify that each listing is still active before applying.*",2026-08-03 06:17:56
+7,01cc6878-f390-4011-922c-e57fe477625e,Tobi,How long should an internship last to be considered as valid?,job_flow,job_flow,Job flow: choose a job,"Choose a result by replying **apply 1**, **apply 2**, etc. You can also type **more jobs**, **restart jobs**, or **cancel jobs**.",2026-08-03 06:18:27
+8,76eca1c4-576d-44c1-bb73-24be244c8181,Tobi,What is an intership?,,answered,OpenRouter fallback (nvidia/nemotron-3-ultra-550b-a55b:free),"An **internship** is a short-term, structured work experience—usually lasting a few weeks to several months—where students or recent graduates apply classroom knowledge in a real workplace.
+
+| Key traits | What it looks like |
+|------------|-------------------|
+| **Duration** | 4–12 weeks (summer) or 3–6 months (semester/year-long) |
+| **Pay** | Paid (monthly stipend/salary), unpaid, or academic-credit only—varies by country, industry, and company size |
+| **Structure** | Defined learning objectives, a supervisor/mentor, regular feedback, and often a final project or presentation |
+| **Outcome** | Skill development, industry exposure, professional network, resume bullet points, and sometimes a return offer |
+
+### Why it matters
+- **Career test-drive** – confirms (or redirects) your interest in a role/industry.  
+- **Employability** – employers in Singapore and globally treat relevant internships as strong signals of readiness.  
+- **Network** – you meet mentors, peers, and potential referees.  
+
+### Quick next steps
+1. **Clarify goals** – function, industry, company size, location.  
+2. **Prepare materials** – tailored résumé, LinkedIn profile, 30-second pitch.  
+3. **Search strategically** – university portal, MyCareersFuture, LinkedIn Jobs, company career pages, referrals.  
+4. **Apply early** – many large firms open summer roles 6–9 months ahead.  
+
+Need help polishing your résumé, finding listings, or prepping for an internship interview? Just let me know!",2026-08-03 06:29:52
+9,76eca1c4-576d-44c1-bb73-24be244c8181,Tobi,Find internships for me in software engineering or data science in Singapore,job_search,job_flow,Job flow: major detected → top three strengths,"Yes — I can match you with roles from the job dataset. I understood your **programme/major as Software Engineering**.
+
+**Step 2 of 3: What are your top three strengths?** Separate them with commas.
+
+Example: Python, data analysis, problem-solving.
+
+Type **restart jobs** if the detected programme/major is incorrect.",2026-08-03 06:30:03
+10,76eca1c4-576d-44c1-bb73-24be244c8181,Tobi,"Problem-solving, JavaScript, Communication",job_flow,job_flow,Job flow: experience level,"What is your **experience level**?
+
+You can answer: no experience, beginner/entry level, intermediate, or advanced.",2026-08-03 06:30:10
+11,76eca1c4-576d-44c1-bb73-24be244c8181,Tobi,Beginner,job_flow,job_flow,Job flow: dataset matches,"### Compatible jobs from the job-market dataset
+Profile used: **Software Engineering** · strengths: **problem-solving, javascript, communication** · experience: **Beginner / entry level**
+
+**1. Software Engineering — Quantom Research Capital**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Noida · On-site
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 166 /month
+
+**2. Embedded Software Engineering — Atlanta Systems Private Limited**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Delhi · On-site
+- Start: Immediately · Duration: 3 Months · Compensation: S$ 200-333 /month
+
+**3. Mobile/Web App Software Engineering — Bempu Health**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Bangalore · On-site
+- Start: Immediately · Duration: 1 Month · Compensation: S$ 200 /month
+
+**4. Software Development Engineering (Web) — WeSeSo Solutions Private Limited**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Work From Home · Work From Home
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 67-200 /month
+
+**5. Software Testing Engineering — AICAN Private Limited**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Mumbai · On-site
+- Start: Immediately · Duration: 3 Months · Compensation: S$ 67-133 /month
+
+Reply **apply 1**, **apply 2**, etc. to create a focused application for that role, or type **more jobs**.
+
+*These are records from your uploaded job dataset, not a live vacancy feed. Verify that each listing is still active before applying.*",2026-08-03 06:30:17
+12,76eca1c4-576d-44c1-bb73-24be244c8181,Tobi,How long should an internship last to be considered as valid?,duration,response_dataset,Response dataset: 'duration' · job flow paused for separate question,"Most internships last between 3 to 6 months.
+
+---
+Your job matches are still available. Reply **apply 1**, **apply 2**, etc., or use **more jobs**, **restart jobs**, or **cancel jobs**.",2026-08-03 06:30:21
+13,76eca1c4-576d-44c1-bb73-24be244c8181,Tobi,Does internship provide visa?,internship,answered,OpenRouter fallback (nvidia/nemotron-3-ultra-550b-a55b:free) · job flow paused for separate question,"**Short answer:**  
+An internship *can* provide a visa, but the employer must sponsor the appropriate work pass—**you cannot intern on a tourist visa or a Student’s Pass alone.**
+
+---
+
+### Singapore work passes for interns
+
+| Pass | Who it’s for | Key rules |
+|------|--------------|-----------|
+| **Training Employment Pass (TEP)** | Degree/diploma holders earning **≥ S$3,000/month** | Employer applies; max 3 months (non-renewable). |
+| **Work Holiday Programme (WHP)** | Students/graduates **18–25** from approved countries (e.g., Australia, France, Germany, HK, Japan, NZ, UK, US, etc.) | Self-applied via MOM; 6 months; no minimum salary. |
+| **Training Work Permit (TWP)** | Semi-skilled trainees from approved sources | Sector-specific; employer applies; up to 6 months. |
+| **Student’s Pass + ICA approval** | Full-time students at **approved Singapore institutions** doing *mandatory* curricular internships | School submits “Letter of Consent” to ICA; unpaid or stipend-only roles allowed. |
+
+> **Most common for international university students:** TEP (paid roles ≥ S$3k) or WHP (if your country qualifies).  
+> **Unpaid/low-stipend roles** usually require the curricular-internship route through your school.
+
+---
+
+### What to ask the employer
+1. “Which work pass will you apply for?”  
+2. “Is the monthly allowance ≥ S$3,000 (for TEP)?”  
+3. “Will you cover the application fee and medical exam?”  
+4. “Can you share the MOM/In-Principle Approval letter before I book flights?”
+
+---
+
+### Red flags
+- “Work on a tourist visa / visa-free entry.” ❌ Illegal.  
+- “We’ll figure out the pass after you arrive.” ❌ High risk.  
+- No written offer stating the pass type and salary.
+
+---
+
+### Quick checklist for you
+- [ ] Confirm your nationality’s WHP eligibility ([MOM WHP page](https://www.mom.gov.sg/passes-and-permits/work-holiday-pass)).  
+- [ ] Verify the internship is **paid ≥ S$3k** if you need a TEP.  
+- [ ] Get the offer letter **before** applying for any pass.  
+- [ ] Keep your university’s career centre in the loop—they often have pre-approved employer lists and can issue consent letters.
+
+Need help reviewing an offer letter or checking if a specific company is a known sponsor? Paste the details (redacted) and I’ll take a look.
+
+---
+Your job matches are still available. Reply **apply 1**, **apply 2**, etc., or use **more jobs**, **restart jobs**, or **cancel jobs**.",2026-08-03 06:31:02
+14,76eca1c4-576d-44c1-bb73-24be244c8181,Tobi,More jobs,job_flow,job_flow,Job flow: more dataset matches,"### Compatible jobs from the job-market dataset
+Profile used: **Software Engineering** · strengths: **problem-solving, javascript, communication** · experience: **Beginner / entry level**
+
+**1. Software Development Engineering (Web) — Mascot IT Solutions**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Faridabad · On-site
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 67 /month + Incentives
+
+**2. Software Development Engineering (Web) — Code Square Technologies**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Indore · On-site
+- Start: Immediately · Duration: 4 Months · Compensation: S$ 67 /month
+
+**3. Software Development Engineering (Web) — Made 2 Automate**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Delhi · On-site
+- Start: Immediately · Duration: 3 Months · Compensation: S$ 40-93 /month
+
+**4. Software Development (JavaScript/Node.js) — Abhith Tecnologies OPC Private Limited**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving, javascript
+- Market details: Technology / Data · Navi Mumbai · On-site
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 40 /month
+
+**5. Business Development (sales and purchase), Communication And Coordination With Stakeholders — Manish Agarwal**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving, communication
+- Market details: Technology / Data · Work From Home · Work From Home
+- Start: Immediately · Duration: 3 Months · Compensation: S$ 67-133 /month
+
+Reply **apply 1**, **apply 2**, etc. to create a focused application for that role, or type **more jobs**.
+
+*These are records from your uploaded job dataset, not a live vacancy feed. Verify that each listing is still active before applying.*",2026-08-03 06:31:27
+15,76eca1c4-576d-44c1-bb73-24be244c8181,Tobi,Apply 5,job_flow,job_flow,Job flow: focused application,"### Application: Business Development (sales and purchase), Communication And Coordination With Stakeholders — Manish Agarwal
+
+**Why this role matches your profile**
+- Programme/major: Software Engineering
+- Strengths to prove: problem-solving, javascript, communication
+- Dataset category: Technology / Data
+
+**Focused application message**
+
+Dear Hiring Team at Manish Agarwal,
+
+I am applying for the Business Development (sales and purchase), Communication And Coordination With Stakeholders opportunity. I am studying Software Engineering, and my strongest relevant qualities are problem-solving, javascript, communication. My current experience level is beginner / entry level, supported by relevant study, projects, and practical work.
+
+The role's focus on business development (sales and purchase), communication and coordination with stakeholders aligns with my background in Software Engineering and my strengths in problem-solving, javascript, communication. In my CV, I would support this with the most relevant coursework, projects, or work examples rather than unrelated experience. I would welcome the opportunity to discuss how these capabilities could support the team at Manish Agarwal.
+
+Kind regards,  
+[Your name]
+
+**CV focus for this application**
+- Lead with evidence related to **Business Development (sales and purchase), Communication And Coordination With Stakeholders**, not a general career objective.
+- Use examples that demonstrate **problem-solving, javascript, communication**.
+- Prioritise projects, technical tools, debugging, data work, and measurable technical outcomes.
+
+**How to apply**
+The dataset does not contain an application URL. Search the exact listing **""Business Development (sales and purchase), Communication And Coordination With Stakeholders"" at ""Manish Agarwal""**, verify that it is active, then submit the tailored message with your CV.
+
+Type **back to jobs** to choose another match or **restart jobs** to change your profile.",2026-08-03 06:31:32
+16,1a6f7706-743e-4e02-aeab-f64a7039bb46,alex,hi,hi,response_dataset,Response dataset: 'hi',Hello! How can I help you with your career or internship today?,2026-08-03 14:14:09
+17,1a6f7706-743e-4e02-aeab-f64a7039bb46,alex,internship,internship,response_dataset,Response dataset: 'internship',"You can look for internships through JCU CareerHub, LinkedIn, JobStreet, and company websites.",2026-08-03 14:14:17
+18,1a6f7706-743e-4e02-aeab-f64a7039bb46,alex,what is internship?,internship,answered,OpenRouter fallback (nvidia/nemotron-3-ultra-550b-a55b:free),"An **internship** is a structured, temporary work experience—usually lasting 2–6 months—where students or recent graduates apply classroom knowledge in a real workplace under supervision.
+
+**Key traits**
+| Aspect | Typical range |
+|--------|---------------|
+| Duration | 8 weeks – 6 months (often aligned with university semesters or summer break) |
+| Commitment | Full-time (35–44 hrs/week) or part-time (15–25 hrs/week) |
+| Compensation | Paid (monthly stipend SGD 600–1,500+ in Singapore), unpaid, or academic-credit only |
+| Outcome | Mentorship, project ownership, networking, and often a pipeline to a graduate role |
+
+**Why it matters**
+- **Skill bridge** – turns theory into deliverables (code, reports, campaigns, financial models).
+- **CV differentiator** – employers weight relevant internships heavily for entry-level hiring.
+- **Career test-drive** – lets you confirm (or rule out) an industry, function, or company culture.
+- **Network** – supervisors and peers become referees and future job leads.
+
+**Common types in Singapore**
+- **Vacation / Summer** (May–Aug)
+- **Industrial Attachment / Co-op** (credit-bearing, 4–6 months, often mandatory for degrees like Engineering, Business, InfoComm)
+- **Part-time / Semester** (15–20 hrs/week alongside classes)
+- **Graduate / Traineeship** (post-degree, 6–12 months, e.g., SGUnited Traineeships)
+
+**Next steps for you**
+1. Check your faculty’s internship office or career portal for approved listings and credit rules.  
+2. Polish a one-page résumé highlighting projects, CCA leadership, and technical tools.  
+3. Apply early—large firms open summer roles 4–6 months ahead; SMEs hire closer to start date.  
+4. Prepare for behavioral + technical interviews (STAR stories, case basics, coding tests, etc.).
+
+Need help with résumé tailoring, cover-letter templates, or interview prep for a specific sector? Just let me know!",2026-08-03 14:15:07
+19,1a6f7706-743e-4e02-aeab-f64a7039bb46,alex,internship in sg,internship,response_dataset,Response dataset: 'internship',"You can look for internships through JCU CareerHub, LinkedIn, JobStreet, and company websites.",2026-08-03 14:15:53
+20,1a6f7706-743e-4e02-aeab-f64a7039bb46,alex,tell me about JCU,,answered,OpenRouter fallback (nvidia/nemotron-3-ultra-550b-a55b:free),"**James Cook University (JCU) Singapore**  
+*Australia’s tropical university, ranked in the top 2 % globally (QS 2025), with a fully accredited Singapore campus at 149 Sims Drive.*
+
+---
+
+### 🎓 Why it matters for internships & careers
+| Feature | What it means for you |
+|---------|----------------------|
+| **Australian degree, Singapore campus** | Identical curriculum & award as Townsville/Cairns; recognised by MOM, WSG, and professional bodies (ACCA, ACS, APS, etc.). |
+| **Trimester system (3 intakes: Feb, Jul, Nov)** | Two long breaks (≈ 8–10 weeks each) + shorter mid-trimester windows → **3–4 natural internship cycles per year**. |
+| **Mandatory Work-Integrated Learning (WIL)** | Most bachelor’s degrees (Business, IT, Psych, Env Sci, Aquaculture, Tourism) embed a **12–26 week credit-bearing internship**; coordinated by the **Careers & Employability team**. |
+| **JCU CareerHub (Symplicity)** | Exclusive portal: 1,200+ employer partners (DBS, Grab, SingHealth, A*STAR, Mandai Wildlife, etc.), on-campus career fairs, resume/CV reviews, mock interviews. |
+| **Industry Advisory Panels** | Curriculum co-designed with employers → projects & capstones often convert to paid internships or grad roles. |
+| **International Student Support** | Dedicated visa/work-pass guidance (Training Employment Pass, Work Holiday Programme) for non-Singaporeans. |
+
+---
+
+### 📅 Typical Internship Timeline for JCU Students
+| Trimester | Action |
+|-----------|--------|
+| **T1 (Feb–May)** | Attend Career Fest (March), activate CareerHub profile, apply for **May–Jul** vacation internships. |
+| **T2 (Jul–Oct)** | Complete mandatory WIL placement (if scheduled); apply for **Nov–Jan** roles. |
+| **T3 (Nov–Feb)** | Summer/year-end internships; final-year students target **Graduate Programmes** (deadlines often Sep–Nov). |
+
+---
+
+### 🛠️ Quick-Start Checklist (JCU Student)
+1. **Log in to CareerHub** → complete profile + upload résumé (use the *JCU Résumé Template*).  
+2. **Book a 1-on-1 Career Consult** (free, unlimited) → tailor applications to your major.  
+3. **Join JCU Industry Mentoring Programme** (alumni + industry mentors).  
+4. **Track WIL deadlines** in your subject outline—late submissions risk credit loss.  
+5. **Leverage the “JCU Singapore Alumni” LinkedIn group** (3,500+ members)",2026-08-03 14:16:37
+21,1a6f7706-743e-4e02-aeab-f64a7039bb46,alex,AI internship and tell me about related job in SG?,AI internship,response_dataset,Response dataset: 'AI internship',"AI internships often require Python, machine learning basics, and data analysis skills.",2026-08-03 14:17:50
+22,3937e1e8-6828-4b97-849e-4b9327717769,alex,internship to apply in this Aug.,internship,response_dataset,Response dataset: 'internship',"You can look for internships through JCU CareerHub, LinkedIn, JobStreet, and company websites.",2026-08-03 14:24:44
+23,3937e1e8-6828-4b97-849e-4b9327717769,alex,James cook recommended internship,internship,response_dataset,Response dataset: 'internship',"You can look for internships through JCU CareerHub, LinkedIn, JobStreet, and company websites.",2026-08-03 14:25:09
+24,3937e1e8-6828-4b97-849e-4b9327717769,alex,Find me a jopb,,answered,OpenRouter fallback (nvidia/nemotron-3-ultra-550b-a55b:free),"I can’t browse live job boards or pull current vacancies, but I can help you run an effective search. Here’s a quick action plan:
+
+### 1. **Best Platforms for Singapore / JCU Students**
+| Platform | Why Use It |
+|---|---|
+| **JCU CareerHub** | Exclusive internships & grad roles posted for JCU students; often includes on-campus hiring events. |
+| **MyCareersFuture (gov.sg)** | Verified local postings; filter by “Internship,” “Fresh Graduate,” or “Part-time.” |
+| **LinkedIn Jobs** | Great for networking + applications; set alerts for keywords (e.g., “Marketing Intern Singapore”). |
+| **JobStreet / Indeed / Glints** | High volume; use filters: *Internship*, *Entry Level*, *Remote/Hybrid*. |
+| **Company Career Pages** | Apply direct for structured programmes (banks, tech firms, MNCs, statutory boards). |
+
+### 2. **Search Keywords to Try**
+- **Role-based:** “Data Analyst Intern,” “Software Engineer Intern,” “Marketing Assistant,” “Management Trainee”
+- **Timing:** “Summer 2025 Internship,” “Aug 2025 Start,” “Immediate Start”
+- **Industry:** “Fintech Internship Singapore,” “Logistics Graduate Programme,” “Hospitality Trainee”
+
+### 3. **Immediate Next Steps (15 mins)**
+1. **Log into JCU CareerHub** → filter *Internship* + *August 2025* → save 3–5 postings.  
+2. **Set 2 LinkedIn Job Alerts** for your target roles/keywords.  
+3. **Polish one master résumé** (1 page, tailored bullets, metrics).  
+4. **Draft a 3-paragraph cover letter template** you can customise per application.  
+5. **Reach out to 2 alumni** (LinkedIn → JCU alumni filter) for quick virtual coffees.
+
+### 4. **If You Want Targeted Suggestions**
+Tell me:
+- **Programme / Major** (e.g., Business, IT, Psychology, Environmental Science)  
+- **Preferred Industry / Function** (e.g., Data, Marketing, Operations, Research)  
+- **Work Pass Status** (Student Pass, PR, Citizen, Dependant’s Pass)  
+- **Location Preference** (Singapore on-site, hybrid, remote, overseas)
+
+With that info I can suggest specific companies, programmes, or search strings to try next.",2026-08-03 14:26:14
+25,3937e1e8-6828-4b97-849e-4b9327717769,alex,Find me an intership in AI,AI internship,answered,OpenRouter fallback (nvidia/nemotron-3-ultra-550b-a55b:free) · related dataset context,"I can’t pull live vacancies, but here’s a practical roadmap to land an **AI / ML internship** in Singapore (or remote) for an August start.
+
+---
+
+### 1. **Where to Search (Priority Order)**
+| Platform / Channel | How to Use It |
+|---|---|
+| **JCU CareerHub** | Filter *Internship* → keywords: “Machine Learning”, “Data Science”, “AI”, “Python”. |
+| **MyCareersFuture.gov.sg** | Search “AI Intern”, “Machine Learning Intern”, “Data Science Intern”; tick *Internship*. |
+| **LinkedIn Jobs** | Set alerts for: “AI Intern Singapore”, “ML Engineer Intern”, “Generative AI Intern”. Follow target companies. |
+| **Glints / JobStreet / Indeed** | Same keywords; add “Remote” if open to regional roles. |
+| **Company Career Pages** | **Big Tech / Labs:** Google (APAC), Meta, Grab, Sea, Shopee, ByteDance, NVIDIA, DSO National Laboratories, A*STAR (IHPC, I2R).<br>**Fintech / Banks:** DBS, OCBC, UOB, Standard Chartered, Stripe, Wise.<br>**AI Startups:** Trax, ViSenze, Taiger, Pencil, Horizon Quantum, Speakr, local YC/Entrepreneur First cohorts. |
+| **Research / Academic** | NUS/NUS-ISS, NTU/SCSE, SUTD, SMU labs – email professors whose work matches your interest. |
+
+---
+
+### 2. **Must-Have Keywords for Alerts**
+- “Machine Learning Intern”, “Deep Learning Intern”, “Computer Vision Intern”, “NLP Intern”, “Generative AI Intern”
+- “Data Science Intern”, “MLOps Intern”, “AI Research Intern”
+- “Python”, “PyTorch”, “TensorFlow”, “LLM”, “RAG”, “Vector DB”
+
+---
+
+### 3. **Core Skills to Highlight (per the grounding context)**
+| Category | Examples to Showcase |
+|---|---|
+| **Programming** | Python (NumPy, Pandas, scikit-learn), Git, Docker basics |
+| **ML / DL** | PyTorch **or** TensorFlow/Keras; model training, evaluation, deployment basics |
+| **Data** | SQL, data cleaning, EDA, visualization (Matplotlib/Seaborn/Plotly) |
+| **Projects** | 2–3 end-to-end notebooks on GitHub (e.g., classification, NLP fine-tuning, CV detection, RAG demo) |
+| **Nice-to-have** | Cloud (AWS/GCP/Azure), MLflow, FastAPI/Streamlit, Kubernetes basics, paper replications |
+
+---
+
+### 4. **15-Minute Action Plan Today**
+1.",2026-08-03 14:28:09
+26,3937e1e8-6828-4b97-849e-4b9327717769,alex,Find internships for me in software engineering or data science in Singapore,job_search,job_flow,Job flow: major detected → top three strengths,"Yes — I can match you with roles from the job dataset. I understood your **programme/major as Software Engineering**.
+
+**Step 2 of 3: What are your top three strengths?** Separate them with commas.
+
+Example: Python, data analysis, problem-solving.
+
+Type **restart jobs** if the detected programme/major is incorrect.",2026-08-03 14:28:54
+27,3937e1e8-6828-4b97-849e-4b9327717769,alex,Find me with the internships related to IT?,internship,answered,OpenRouter fallback (nvidia/nemotron-3-ultra-550b-a55b:free) · job flow paused for separate question,"I can’t pull live vacancies, but here’s a focused action plan to find **IT internships in Singapore** (software engineering, infrastructure, cybersecurity, data, etc.) for an August start.
+
+---
+
+### 1. **Top Platforms & Channels**
+| Platform | How to Use It |
+|---|---|
+| **JCU CareerHub** | Filter *Internship* → IT/Computing categories; save 5–10 postings. |
+| **MyCareersFuture.gov.sg** | Search “IT Intern”, “Software Engineer Intern”, “Systems Analyst Intern”, “Cybersecurity Intern”; tick *Internship*. |
+| **LinkedIn Jobs** | Alerts for: “Software Engineer Intern Singapore”, “DevOps Intern”, “Cloud Intern”, “IT Support Intern”. Follow target firms. |
+| **Glints / JobStreet / Indeed** | Same keywords; add “Remote” or “Hybrid” if flexible. |
+| **Company Career Pages** | **Big Tech / MNCs:** Google, Meta, Microsoft, Amazon, Grab, Sea, Shopee, ByteDance, GovTech, DSTA, DSO.<br>**Banks / Fintech:** DBS, OCBC, UOB, Standard Chartered, Stripe, Wise, Revolut.<br>**Telco / Logistics / Healthtech:** Singtel, ST Engineering, NinjaVan, Doctor Anywhere, Homage. |
+| **Startup / Venture Portals** | AngelList (Wellfound), e27, SGInnovate, EnterpriseSG’s *Startup SG* job board. |
+
+---
+
+### 2. **High-Yield Search Keywords**
+- **Dev/Engineering:** “Backend Intern”, “Frontend Intern”, “Full Stack Intern”, “Mobile Intern (iOS/Android)”, “Java Intern”, “Go Intern”, “Python Intern”
+- **Infra/Cloud/DevOps:** “DevOps Intern”, “Cloud Intern (AWS/Azure/GCP)”, “Site Reliability Intern”, “Platform Engineering Intern”
+- **Security:** “Cybersecurity Intern”, “SOC Analyst Intern”, “AppSec Intern”, “Red Team Intern”
+- **Data/ML (if cross-over):** “Data Engineer Intern”, “MLOps Intern”, “Analytics Intern”
+
+---
+
+### 3. **Core Skills to Highlight (per grounding context)**
+| Area | Evidence to Show |
+|---|---|
+| **Programming** | Java / Python / Go / JavaScript / TypeScript; Git, CI/CD basics |
+| **Frameworks** | Spring Boot, Node.js/Express, React, Next.js, .NET Core, Django/FastAPI |
+| **Databases** | PostgreSQL, MySQL, MongoDB, Redis; basic SQL
+
+---
+Your job-matching flow is still open. Please provide your **top three strengths**, separated by commas, or type **cancel jobs**.",2026-08-03 14:30:03
+28,3937e1e8-6828-4b97-849e-4b9327717769,alex,"my thress strengths is C++, problem-solving, machine learning",job_flow,job_flow,Job flow: experience level,"What is your **experience level**?
+
+You can answer: no experience, beginner/entry level, intermediate, or advanced.",2026-08-03 14:31:38
+29,3937e1e8-6828-4b97-849e-4b9327717769,alex,beginner,job_flow,job_flow,Job flow: dataset matches,"### Compatible jobs from the job-market dataset
+Profile used: **Software Engineering** · strengths: **my thress strengths is c++, problem-solving, machine learning** · experience: **Beginner / entry level**
+
+**1. Machine Learning Engineering — Harshit Surana**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving, machine learning
+- Market details: Technology / Data · Work From Home · Work From Home
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 333 /month
+
+**2. Machine Learning Engineering — Vidhilabs**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving, machine learning
+- Market details: Technology / Data · Work From Home · Work From Home
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 133 /month + Incentives
+
+**3. Software Engineering — Quantom Research Capital**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Noida · On-site
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 166 /month
+
+**4. Embedded Software Engineering — Atlanta Systems Private Limited**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Delhi · On-site
+- Start: Immediately · Duration: 3 Months · Compensation: S$ 200-333 /month
+
+**5. Mobile/Web App Software Engineering — Bempu Health**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Bangalore · On-site
+- Start: Immediately · Duration: 1 Month · Compensation: S$ 200 /month
+
+Reply **apply 1**, **apply 2**, etc. to create a focused application for that role, or type **more jobs**.
+
+*These are records from your uploaded job dataset, not a live vacancy feed. Verify that each listing is still active before applying.*",2026-08-03 14:31:49
+30,3937e1e8-6828-4b97-849e-4b9327717769,alex,more info,job_flow,job_flow,Job flow: experience level,"Please enter a valid **experience level**: no experience, beginner/entry level, intermediate, advanced, or a duration such as 6 months or 2 years.",2026-08-03 14:32:32
+31,3937e1e8-6828-4b97-849e-4b9327717769,alex,3,job_flow,job_flow,Job flow: experience level,"Please enter a valid **experience level**: no experience, beginner/entry level, intermediate, advanced, or a duration such as 6 months or 2 years.",2026-08-03 14:32:35
+32,3937e1e8-6828-4b97-849e-4b9327717769,alex,intermediate,job_flow,job_flow,Job flow: dataset matches,"### Compatible jobs from the job-market dataset
+Profile used: **Software Engineering** · strengths: **my thress strengths is c++, problem-solving, machine learning** · experience: **Intermediate**
+
+**1. Machine Learning Engineering — Harshit Surana**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving, machine learning
+- Market details: Technology / Data · Work From Home · Work From Home
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 333 /month
+
+**2. Machine Learning Engineering — Vidhilabs**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving, machine learning
+- Market details: Technology / Data · Work From Home · Work From Home
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 133 /month + Incentives
+
+**3. Software Engineering — Quantom Research Capital**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Noida · On-site
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 166 /month
+
+**4. Embedded Software Engineering — Atlanta Systems Private Limited**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Delhi · On-site
+- Start: Immediately · Duration: 3 Months · Compensation: S$ 200-333 /month
+
+**5. Mobile/Web App Software Engineering — Bempu Health**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Bangalore · On-site
+- Start: Immediately · Duration: 1 Month · Compensation: S$ 200 /month
+
+Reply **apply 1**, **apply 2**, etc. to create a focused application for that role, or type **more jobs**.
+
+*These are records from your uploaded job dataset, not a live vacancy feed. Verify that each listing is still active before applying.*",2026-08-03 14:32:45
+33,3937e1e8-6828-4b97-849e-4b9327717769,alex,i want to apply Find internships for me in software engineering or data science in Singapore,job_flow,job_flow,Job flow: experience level,"Please enter a valid **experience level**: no experience, beginner/entry level, intermediate, advanced, or a duration such as 6 months or 2 years.",2026-08-03 14:33:31
+34,3937e1e8-6828-4b97-849e-4b9327717769,alex,apply 5,job_flow,job_flow,Job flow: experience level,"Please enter a valid **experience level**: no experience, beginner/entry level, intermediate, advanced, or a duration such as 6 months or 2 years.",2026-08-03 14:33:40
+35,3937e1e8-6828-4b97-849e-4b9327717769,alex,intermediate,job_flow,job_flow,Job flow: dataset matches,"### Compatible jobs from the job-market dataset
+Profile used: **Software Engineering** · strengths: **my thress strengths is c++, problem-solving, machine learning** · experience: **Intermediate**
+
+**1. Machine Learning Engineering — Harshit Surana**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving, machine learning
+- Market details: Technology / Data · Work From Home · Work From Home
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 333 /month
+
+**2. Machine Learning Engineering — Vidhilabs**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving, machine learning
+- Market details: Technology / Data · Work From Home · Work From Home
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 133 /month + Incentives
+
+**3. Software Engineering — Quantom Research Capital**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Noida · On-site
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 166 /month
+
+**4. Embedded Software Engineering — Atlanta Systems Private Limited**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Delhi · On-site
+- Start: Immediately · Duration: 3 Months · Compensation: S$ 200-333 /month
+
+**5. Mobile/Web App Software Engineering — Bempu Health**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Bangalore · On-site
+- Start: Immediately · Duration: 1 Month · Compensation: S$ 200 /month
+
+Reply **apply 1**, **apply 2**, etc. to create a focused application for that role, or type **more jobs**.
+
+*These are records from your uploaded job dataset, not a live vacancy feed. Verify that each listing is still active before applying.*",2026-08-03 14:33:57
+36,3937e1e8-6828-4b97-849e-4b9327717769,alex,apply 5,job_flow,job_flow,Job flow: experience level,"Please enter a valid **experience level**: no experience, beginner/entry level, intermediate, advanced, or a duration such as 6 months or 2 years.",2026-08-03 14:34:02
+37,3937e1e8-6828-4b97-849e-4b9327717769,alex,2 years,job_flow,job_flow,Job flow: dataset matches,"### Compatible jobs from the job-market dataset
+Profile used: **Software Engineering** · strengths: **my thress strengths is c++, problem-solving, machine learning** · experience: **Intermediate**
+
+**1. Machine Learning Engineering — Harshit Surana**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving, machine learning
+- Market details: Technology / Data · Work From Home · Work From Home
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 333 /month
+
+**2. Machine Learning Engineering — Vidhilabs**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving, machine learning
+- Market details: Technology / Data · Work From Home · Work From Home
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 133 /month + Incentives
+
+**3. Software Engineering — Quantom Research Capital**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Noida · On-site
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 166 /month
+
+**4. Embedded Software Engineering — Atlanta Systems Private Limited**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Delhi · On-site
+- Start: Immediately · Duration: 3 Months · Compensation: S$ 200-333 /month
+
+**5. Mobile/Web App Software Engineering — Bempu Health**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Bangalore · On-site
+- Start: Immediately · Duration: 1 Month · Compensation: S$ 200 /month
+
+Reply **apply 1**, **apply 2**, etc. to create a focused application for that role, or type **more jobs**.
+
+*These are records from your uploaded job dataset, not a live vacancy feed. Verify that each listing is still active before applying.*",2026-08-03 14:35:14
+38,3937e1e8-6828-4b97-849e-4b9327717769,alex,create a focused application for Mobile/Web App Software Engineering,job_flow,job_flow,Job flow: experience level,"Please enter a valid **experience level**: no experience, beginner/entry level, intermediate, advanced, or a duration such as 6 months or 2 years.",2026-08-03 14:35:41
+39,3937e1e8-6828-4b97-849e-4b9327717769,alex,beginner,job_flow,job_flow,Job flow: dataset matches,"### Compatible jobs from the job-market dataset
+Profile used: **Software Engineering** · strengths: **my thress strengths is c++, problem-solving, machine learning** · experience: **Beginner / entry level**
+
+**1. Machine Learning Engineering — Harshit Surana**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving, machine learning
+- Market details: Technology / Data · Work From Home · Work From Home
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 333 /month
+
+**2. Machine Learning Engineering — Vidhilabs**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving, machine learning
+- Market details: Technology / Data · Work From Home · Work From Home
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 133 /month + Incentives
+
+**3. Software Engineering — Quantom Research Capital**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Noida · On-site
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 166 /month
+
+**4. Embedded Software Engineering — Atlanta Systems Private Limited**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Delhi · On-site
+- Start: Immediately · Duration: 3 Months · Compensation: S$ 200-333 /month
+
+**5. Mobile/Web App Software Engineering — Bempu Health**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Bangalore · On-site
+- Start: Immediately · Duration: 1 Month · Compensation: S$ 200 /month
+
+Reply **apply 1**, **apply 2**, etc. to create a focused application for that role, or type **more jobs**.
+
+*These are records from your uploaded job dataset, not a live vacancy feed. Verify that each listing is still active before applying.*",2026-08-03 14:35:48
+40,3937e1e8-6828-4b97-849e-4b9327717769,alex,1,job_flow,job_flow,Job flow: experience level,"Please enter a valid **experience level**: no experience, beginner/entry level, intermediate, advanced, or a duration such as 6 months or 2 years.",2026-08-03 14:35:49
+41,3937e1e8-6828-4b97-849e-4b9327717769,alex,1,job_flow,job_flow,Job flow: experience level,"Please enter a valid **experience level**: no experience, beginner/entry level, intermediate, advanced, or a duration such as 6 months or 2 years.",2026-08-03 14:35:51
+42,3937e1e8-6828-4b97-849e-4b9327717769,alex,2 years,job_flow,job_flow,Job flow: dataset matches,"### Compatible jobs from the job-market dataset
+Profile used: **Software Engineering** · strengths: **my thress strengths is c++, problem-solving, machine learning** · experience: **Intermediate**
+
+**1. Machine Learning Engineering — Harshit Surana**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving, machine learning
+- Market details: Technology / Data · Work From Home · Work From Home
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 333 /month
+
+**2. Machine Learning Engineering — Vidhilabs**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving, machine learning
+- Market details: Technology / Data · Work From Home · Work From Home
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 133 /month + Incentives
+
+**3. Software Engineering — Quantom Research Capital**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Noida · On-site
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 166 /month
+
+**4. Embedded Software Engineering — Atlanta Systems Private Limited**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Delhi · On-site
+- Start: Immediately · Duration: 3 Months · Compensation: S$ 200-333 /month
+
+**5. Mobile/Web App Software Engineering — Bempu Health**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Bangalore · On-site
+- Start: Immediately · Duration: 1 Month · Compensation: S$ 200 /month
+
+Reply **apply 1**, **apply 2**, etc. to create a focused application for that role, or type **more jobs**.
+
+*These are records from your uploaded job dataset, not a live vacancy feed. Verify that each listing is still active before applying.*",2026-08-03 14:35:54
+43,3937e1e8-6828-4b97-849e-4b9327717769,alex,apply 2,job_flow,job_flow,Job flow: experience level,"Please enter a valid **experience level**: no experience, beginner/entry level, intermediate, advanced, or a duration such as 6 months or 2 years.",2026-08-03 14:35:58
+44,3937e1e8-6828-4b97-849e-4b9327717769,alex,do i need to prepare for this job?,,answered,OpenRouter fallback (nvidia/nemotron-3-ultra-550b-a55b:free) · job flow paused for separate question,"Yes — preparation is almost always worthwhile, but **which specific role or company** are you thinking of?
+
+If you tell me the job title, company, or a short description, I can give you a concise prep checklist (technical topics, behavioral questions, portfolio items, etc.).
+
+Also, to tailor the advice to your background, please share your **experience level** (e.g., no experience, beginner/entry level, intermediate, advanced, or a duration like “6 months” or “2 years”).
+
+---
+Your job-matching flow is still open. Please provide your **experience level**: no experience, beginner, intermediate, or advanced.",2026-08-03 14:37:21
+45,3937e1e8-6828-4b97-849e-4b9327717769,alex,no experience,job_flow,job_flow,Job flow: dataset matches,"### Compatible jobs from the job-market dataset
+Profile used: **Software Engineering** · strengths: **my thress strengths is c++, problem-solving, machine learning** · experience: **No experience**
+
+**1. Machine Learning Engineering — Harshit Surana**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving, machine learning
+- Market details: Technology / Data · Work From Home · Work From Home
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 333 /month
+
+**2. Machine Learning Engineering — Vidhilabs**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving, machine learning
+- Market details: Technology / Data · Work From Home · Work From Home
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 133 /month + Incentives
+
+**3. Software Engineering — Quantom Research Capital**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Noida · On-site
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 166 /month
+
+**4. Embedded Software Engineering — Atlanta Systems Private Limited**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Delhi · On-site
+- Start: Immediately · Duration: 3 Months · Compensation: S$ 200-333 /month
+
+**5. Mobile/Web App Software Engineering — Bempu Health**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Bangalore · On-site
+- Start: Immediately · Duration: 1 Month · Compensation: S$ 200 /month
+
+Reply **apply 1**, **apply 2**, etc. to create a focused application for that role, or type **more jobs**.
+
+*These are records from your uploaded job dataset, not a live vacancy feed. Verify that each listing is still active before applying.*",2026-08-03 14:37:34
+46,3937e1e8-6828-4b97-849e-4b9327717769,alex,which skills do i need to fill to apply 5,skills,response_dataset,Response dataset: 'skills' · job flow paused for separate question,"You should learn Python, machine learning basics, data analysis, and communication skills.
+
+---
+Your job-matching flow is still open. Please provide your **experience level**: no experience, beginner, intermediate, or advanced.",2026-08-03 14:38:00
+47,3937e1e8-6828-4b97-849e-4b9327717769,alex,advance,job_flow,job_flow,Job flow: experience level,"Please enter a valid **experience level**: no experience, beginner/entry level, intermediate, advanced, or a duration such as 6 months or 2 years.",2026-08-03 14:39:03
+48,3937e1e8-6828-4b97-849e-4b9327717769,alex,advanced,job_flow,job_flow,Job flow: dataset matches,"### Compatible jobs from the job-market dataset
+Profile used: **Software Engineering** · strengths: **my thress strengths is c++, problem-solving, machine learning** · experience: **Advanced**
+
+**1. Machine Learning Engineering — Harshit Surana**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving, machine learning
+- Market details: Technology / Data · Work From Home · Work From Home
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 333 /month
+
+**2. Machine Learning Engineering — Vidhilabs**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving, machine learning
+- Market details: Technology / Data · Work From Home · Work From Home
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 133 /month + Incentives
+
+**3. Software Engineering — Quantom Research Capital**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Noida · On-site
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 166 /month
+
+**4. Embedded Software Engineering — Atlanta Systems Private Limited**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Delhi · On-site
+- Start: Immediately · Duration: 3 Months · Compensation: S$ 200-333 /month
+
+**5. Mobile/Web App Software Engineering — Bempu Health**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Bangalore · On-site
+- Start: Immediately · Duration: 1 Month · Compensation: S$ 200 /month
+
+Reply **apply 1**, **apply 2**, etc. to create a focused application for that role, or type **more jobs**.
+
+*These are records from your uploaded job dataset, not a live vacancy feed. Verify that each listing is still active before applying.*",2026-08-03 14:39:16
+49,3937e1e8-6828-4b97-849e-4b9327717769,alex,apply 5,job_flow,job_flow,Job flow: experience level,"Please enter a valid **experience level**: no experience, beginner/entry level, intermediate, advanced, or a duration such as 6 months or 2 years.",2026-08-03 14:39:26
+50,3937e1e8-6828-4b97-849e-4b9327717769,alex,advanced,job_flow,job_flow,Job flow: dataset matches,"### Compatible jobs from the job-market dataset
+Profile used: **Software Engineering** · strengths: **my thress strengths is c++, problem-solving, machine learning** · experience: **Advanced**
+
+**1. Machine Learning Engineering — Harshit Surana**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving, machine learning
+- Market details: Technology / Data · Work From Home · Work From Home
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 333 /month
+
+**2. Machine Learning Engineering — Vidhilabs**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving, machine learning
+- Market details: Technology / Data · Work From Home · Work From Home
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 133 /month + Incentives
+
+**3. Software Engineering — Quantom Research Capital**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Noida · On-site
+- Start: Immediately · Duration: 6 Months · Compensation: S$ 166 /month
+
+**4. Embedded Software Engineering — Atlanta Systems Private Limited**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Delhi · On-site
+- Start: Immediately · Duration: 3 Months · Compensation: S$ 200-333 /month
+
+**5. Mobile/Web App Software Engineering — Bempu Health**
+- **Strong match** · Software Engineering aligns with the Technology / Data category; strength match: problem-solving
+- Market details: Technology / Data · Bangalore · On-site
+- Start: Immediately · Duration: 1 Month · Compensation: S$ 200 /month
+
+Reply **apply 1**, **apply 2**, etc. to create a focused application for that role, or type **more jobs**.
+
+*These are records from your uploaded job dataset, not a live vacancy feed. Verify that each listing is still active before applying.*",2026-08-03 14:39:38
+51,3937e1e8-6828-4b97-849e-4b9327717769,alex,more jobs,job_flow,job_flow,Job flow: experience level,"Please enter a valid **experience level**: no experience, beginner/entry level, intermediate, advanced, or a duration such as 6 months or 2 years.",2026-08-03 14:39:40

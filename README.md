@@ -1,356 +1,559 @@
-# InternAI CareerBot 🎓
+<div align="center">
 
-A full-stack AI-powered internship and career assistant prototype built with **Flask** and **Google Gemini 2.5 Flash**.
+<sub>ASE CP3407 &nbsp;·&nbsp; TR2 2026 &nbsp;·&nbsp; Singapore &nbsp;·&nbsp; Group 4</sub>
 
-The current version supports AI chat, keyword-based responses, conversation logging, and account-page interfaces. The account backend and dataset-powered internship search are still under development.
+# InternAI CareerBot
 
-## Project Status
+<sub>Dataset-grounded career guidance, guided job matching, dual-LLM fallback, and focused application support.</sub>
 
-| Area | Current Status |
+<br>
+
+![Group](https://img.shields.io/badge/Group-4-2563eb?style=flat-square&labelColor=161b22)
+![Subject](https://img.shields.io/badge/Subject-ASE_CP3407-0f766e?style=flat-square&labelColor=161b22)
+![Progress](https://img.shields.io/badge/Progress-Week_10-58a6ff?style=flat-square&labelColor=161b22&logo=issuu)
+![Status](https://img.shields.io/badge/Status-Active_Development-3fb950?style=flat-square&labelColor=161b22&logo=statuspage)
+![Project](https://img.shields.io/badge/Project-InternAI-d29922?style=flat-square&labelColor=161b22)
+![Backend](https://img.shields.io/badge/Backend-Python_%7C_Flask-3776ab?style=flat-square&labelColor=161b22&logo=flask)
+![Language](https://img.shields.io/badge/Language-Python-3776ab?style=flat-square&labelColor=161b22&logo=python&logoColor=white)
+![LLMs](https://img.shields.io/badge/LLM_Models-2-bc8cff?style=flat-square&labelColor=161b22&logo=openrouter)
+
+</div>
+
+---
+
+## What This Project Does
+
+InternAI CareerBot is an internship and career support application developed by Group 4 for ASE CP3407.
+
+The system combines a structured response dataset, a guided job-matching workflow, account management, conversation logging, and two large language model providers. It is designed to help university students explore internships, identify compatible opportunities, prepare applications, and ask open-ended career questions.
+
+The current application can:
+
+- Answer known career questions from `bot_responses.csv`
+- Detect natural job-search requests
+- Collect a user's program or major, top three strengths, and experience level
+- Rank internship records from the project dataset
+- Display compatible roles and supporting match reasons
+- Generate role-focused application guidance
+- Answer separate questions without losing the active job workflow
+- Use OpenRouter as the primary LLM provider
+- Use Google Gemini as an optional secondary fallback
+- Save account and conversation information in CSV files for development use
+
+> **Week 10 Status:** The Flask application, account pages, CSV account workflow, response dataset, internship matching, job-selection workflow, application guidance, OpenRouter integration, optional Gemini fallback, and workflow restoration are available. Broader testing, production security, and live vacancy integration remain in progress.
+
+---
+
+## Quick Start
+
+### Requirements
+
+- Python 3.11 or later
+- `pip`
+- An OpenRouter API key for the primary AI fallback
+- An optional Gemini API key for secondary fallback behavior
+
+### Setup
+
+```bash
+cd AI
+
+py -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+On macOS or Linux:
+
+```bash
+cd AI
+
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+### Environment Configuration
+
+Create a private `.env` file in the same directory as `app.py`.
+
+```env
+SECRET_KEY=your-long-random-flask-secret
+
+OPENROUTER_API_KEY=your-openrouter-api-key
+OPENROUTER_MODEL=nvidia/nemotron-3-ultra-550b-a55b:free
+OPENROUTER_SITE_URL=
+OPENROUTER_APP_TITLE=InternAI CareerBot
+OPENROUTER_TIMEOUT_SECONDS=60
+
+GEMINI_API_KEY=your-optional-gemini-api-key
+GEMINI_MODEL=gemini-2.5-flash
+```
+
+Generate a Flask secret in PowerShell:
+
+```powershell
+py -c "import secrets; print(secrets.token_hex(32))"
+```
+
+Never commit real API keys to GitHub.
+
+### Run the Application
+
+```bash
+python app.py
+```
+
+Open:
+
+```text
+http://127.0.0.1:5002
+```
+
+A successful startup reports the number of loaded response rows, loaded job rows, and configured LLM providers.
+
+---
+
+## Core Workflow
+
+The guided workflow is:
+
+```text
+Program or Major
+        ↓
+Top Three Strengths
+        ↓
+Experience Level
+        ↓
+Compatible Job or Internship Results
+        ↓
+Focused Application Guidance
+```
+
+Example:
+
+```text
+User: Is there any job for computer science?
+
+Bot: I understood your program or major as Computer Science.
+     What are your top three strengths?
+
+User: Python, data analysis, problem-solving
+
+Bot: What is your experience level?
+
+User: Beginner
+
+Bot: Displays the strongest matching internship records.
+
+User: apply 3
+
+Bot: Generates a focused application message and CV priorities.
+```
+
+Supported workflow commands:
+
+```text
+apply 1
+apply 2
+apply 3
+apply 4
+apply 5
+more jobs
+back to jobs
+restart jobs
+cancel jobs
+```
+
+The application stores the exact job IDs currently displayed, allowing users to select results 1 through 5 reliably.
+
+---
+
+## Message Routing
+
+Each user message is processed in this order:
+
+1. Detect a separate question during an active job workflow.
+2. Answer the separate question without deleting the saved workflow state.
+3. Continue the active workflow when the message is a valid answer for the current stage.
+4. Start a new workflow when the user asks to find, recommend, search for, or apply for a role.
+5. Return a confident response from `bot_responses.csv`.
+6. Use OpenRouter for unmatched open-ended career questions.
+7. Use Gemini as an optional secondary fallback when OpenRouter is unavailable.
+8. Return a safe error or related saved response when no AI provider can respond.
+
+### Workflow Restoration
+
+A separate question does not cancel the job workflow.
+
+```text
+Bot: Reply apply 1 through apply 5.
+
+User: How long should an internship normally last?
+
+Bot: Answers the question.
+
+Bot: Your job matches are still available.
+     Reply apply 1, apply 2, more jobs, restart jobs, or cancel jobs.
+
+User: apply 4
+```
+
+The workflow remains stored in the Flask session and resumes at the same stage.
+
+---
+
+## Main Capabilities
+
+| Capability | Current Implementation |
 |---|---|
-| AI chatbot prototype | Completed |
-| Gemini API integration | Completed |
-| Conversation logging | Completed |
-| Internship dataset cleaning | Completed |
-| Chatbot scope and sample questions | Completed |
-| Create Account and Sign In pages | Completed |
-| CSV-based account backend | In progress |
-| Internship search and filtering | Planned for Iteration 3 |
+| Career and internship chat | Response dataset with LLM fallback |
+| Natural job-search detection | Pattern and major detection |
+| Guided profile collection | Program, strengths, and experience |
+| Internship matching | Weighted ranking against the CSV dataset |
+| Result selection | Visible results 1 through 5 |
+| Application support | Focused message and CV guidance |
+| Open questions during workflow | Answered without losing progress |
+| Account creation | CSV-based development workflow |
+| Sign-in validation | CSV lookup and password comparison |
+| Conversation logging | CSV-based logging |
+| Primary LLM | OpenRouter |
+| Secondary LLM | Google Gemini |
+| Live job-market feed | Not implemented |
+
+---
+
+## Technology Stack
+
+| Layer | Technology |
+|---|---|
+| Backend | Python, Flask |
+| Primary LLM | OpenRouter |
+| Secondary LLM | Google Gemini |
+| Frontend | HTML5, CSS3, Vanilla JavaScript |
+| Markdown rendering | marked.js |
+| Response storage | CSV |
+| Account storage | CSV |
+| Conversation logging | CSV |
+| Internship dataset | CSV |
+| Environment configuration | python-dotenv |
+| HTTP requests | requests |
+| Version control | Git and GitHub |
 
 ---
 
 ## Project Structure
 
 ```text
-InternAI/
-├── app.py                          # Flask backend, routes, Gemini AI, and CSV logging
-├── requirements.txt               # Python dependencies
-├── .env.example                   # Environment variable template
+AI/
+├── app.py
+├── requirements.txt
+├── .env
+├── .gitignore
+├── bot_responses.csv
+├── JOB_FLOW_README.md
+├── LATEST_UPDATE.md
 │
 ├── templates/
-│   ├── login.html                 # Sign In page
-│   ├── signup.html                # Create Account page
-│   └── chat.html                  # Main chatbot interface
+│   ├── login.html
+│   ├── signup.html
+│   └── chat.html
 │
 ├── static/
 │   ├── css/
-│   │   └── style.css              # Shared design system
 │   └── js/
-│       └── utils.js               # Shared JavaScript utilities
 │
-└── data/
-    ├── bot_responses.csv           # Keyword-to-response mapping
-    ├── conversation_log.csv        # Automatically generated conversation log
-    ├── internship_sgd.csv          # Cleaned Singapore internship dataset
-    ├── users.csv                   # Account data storage; backend integration in progress
-    └── our_first_internship_sgd.py # Dataset cleaning and exploratory analysis script
+├── data/
+│   ├── bot_responses.csv
+│   ├── users.csv
+│   └── conversation_log.csv
+│
+├── Dataset/
+│   └── internship_selected_columns.csv
+│
+├── iteration-1/
+└── iteration-2/
 ```
 
-> Some files, such as `conversation_log.csv` and `users.csv`, may be created or updated automatically when the relevant features run.
+Some CSV files are created or updated while the application is running.
 
 ---
 
-## Quick Start
+## Internship Matching
 
-### 1. Install dependencies
+The ranking system considers:
 
-```bash
-pip install -r requirements.txt
-```
+- Program or major
+- Top three strengths
+- Experience level
+- Internship title
+- Dataset category
+- Search terms
+- Skill-related hints
+- Record completeness
 
-### 2. Set the Gemini API key
+Displayed results can include:
 
-Create a Gemini API key through Google AI Studio.
+- Job or internship title
+- Company
+- Compatibility label
+- Match explanation
+- Category
+- Location
+- Work mode
+- Start date
+- Duration
+- Compensation
 
-**Option A — `.env` file (recommended):**
-
-```bash
-cp .env.example .env
-```
-
-Then add the key to `.env`:
-
-```env
-GEMINI_API_KEY=your_key_here
-```
-
-**Option B — Environment variable:**
-
-```bash
-# Windows Command Prompt
-set GEMINI_API_KEY=your_key_here
-
-# Windows PowerShell
-$env:GEMINI_API_KEY="your_key_here"
-
-# macOS or Linux
-export GEMINI_API_KEY=your_key_here
-```
-
-### 3. Run the server
-
-```bash
-python app.py
-```
-
-Open the application in a browser:
-
-```text
-http://127.0.0.1:5002
-```
+The supplied internship dataset is a stored project dataset, not a live vacancy feed.
 
 ---
 
-## How It Works
+## Response Dataset
 
-1. A user opens the website and accesses the chatbot.
-2. The user enters a career- or internship-related question.
-3. The Flask backend checks `data/bot_responses.csv` for a matching keyword.
-4. When a suitable keyword response is found, the predefined reply is returned.
-5. When no suitable keyword is found, the question is sent to **Google Gemini 2.5 Flash** with the available conversation history.
-6. The interaction is recorded in `data/conversation_log.csv`.
-7. The Create Account and Sign In interfaces are available, while CSV account storage and sign-in validation are being completed in Iteration 2.
-8. Dataset-powered internship search, ranking, and filtering will be added in Iteration 3.
+`bot_responses.csv` provides grounded answers before an LLM is called.
 
-The conversation log can include:
+The matcher supports:
 
-- `conversation_no`
-- `session_id`
-- `username`
-- `user_message`
-- `matched_keyword`
-- `status`
-- `process`
-- `bot_reply`
-- `timestamp`
+- Whole-word and whole-phrase matching
+- Query normalization
+- Common aliases
+- Token overlap
+- Similarity scoring
+- Specific-keyword prioritization
+- Generic-response suppression when a direct explanation is more appropriate
 
----
-
-## Chatbot Scope
-
-The chatbot is focused on internship discovery and career preparation. The current scope follows this user journey:
-
-```text
-Programme or Major
-        ↓
-Top Three Strengths
-        ↓
-Experience Level
-        ↓
-Recommended Job or Internship
-        ↓
-Application Guidance
-```
-
-Supported topics include:
-
-- Internship and job opportunities
-- Resume and cover-letter preparation
-- Interview preparation
-- Skills and career readiness
-- Networking and alumni access
-- Professional certifications
-- Long-term career progression
-- Career mobility within the Asia-Pacific region
-
-Questions outside the project scope should receive a clear response explaining that the chatbot supports internship and career-related topics only.
-
----
-
-## Customising Keyword Responses
-
-Edit `data/bot_responses.csv` to add or update keyword-based quick replies.
+Example CSV structure:
 
 ```csv
 keyword;category;bot_reply
 resume;career preparation;A strong resume should clearly present your skills, education, and relevant experience.
-interview;career preparation;Start by researching the organisation and preparing examples using the STAR method.
+interview;career preparation;Research the organization and prepare examples using the STAR method.
 ```
 
-Use a semicolon (`;`) as the delimiter. Keyword responses are checked before the Gemini API is called.
+---
+
+## LLM Configuration
+
+### OpenRouter
+
+OpenRouter is the primary provider for unmatched open-ended questions.
+
+Default model:
+
+```text
+nvidia/nemotron-3-ultra-550b-a55b:free
+```
+
+### Google Gemini
+
+Gemini is an optional secondary fallback.
+
+Default model:
+
+```text
+gemini-2.5-flash
+```
+
+The structured response dataset and guided job workflow always take priority over both LLM providers.
 
 ---
 
-## Internship Dataset
+## Diagnostics
 
-The internship dataset is prepared for use by the chatbot.
+Open:
 
-The cleaned dataset should retain these useful fields:
+```text
+http://127.0.0.1:5002/api/ai_status
+```
 
-- Job title
-- Company
-- Location
-- Duration
-- Salary
-- Work mode
-- Application link
+The endpoint reports:
 
-The cleaning process covers:
+- Whether OpenRouter is configured
+- The selected OpenRouter model
+- Whether Gemini is configured
+- The selected Gemini model
+- Number of response rows loaded
+- Number of job rows loaded
+- Current routing order
 
-- Removing duplicate records
-- Handling missing values
-- Removing unnecessary spaces
-- Standardising inconsistent text
-- Removing unnecessary columns
-- Checking that all required columns are available
-
-`data/our_first_internship_sgd.py` contains the dataset-cleaning and exploratory-analysis workflow for Singapore internship data.
+The endpoint does not expose API keys.
 
 ---
 
-## Tech Stack
+## Testing
 
-| Layer | Technology |
+### Saved Response
+
+```text
+What is an internship stipend?
+```
+
+Expected process:
+
+```text
+Response dataset
+```
+
+### Open-Ended Question
+
+```text
+How can I explain a failed university project positively during an interview?
+```
+
+Expected process:
+
+```text
+OpenRouter fallback
+```
+
+If OpenRouter fails and Gemini is configured, Gemini may provide the response.
+
+### Guided Job Flow
+
+```text
+Is there any job for computer science?
+```
+
+Expected sequence:
+
+```text
+Detect Computer Science
+→ Ask for three strengths
+→ Ask for experience level
+→ Display matching records
+→ Accept apply 1 through apply 5
+```
+
+### Workflow Interruption
+
+```text
+Bot: Select a result using apply 1 through apply 5.
+User: Do employers care about university grades?
+```
+
+Expected behavior:
+
+```text
+Answer the question
+→ Preserve the displayed results
+→ Remind the user how to continue
+```
+
+---
+
+## Development Progress
+
+| Iteration | Main Goal | Current Outcome |
+|---|---|---|
+| Iteration 1 | Basic AI chatbot prototype | Completed |
+| Iteration 2 | Account system and dataset preparation | Core work completed |
+| Iteration 3 | Internship search and recommendation | Core workflow implemented; testing continues |
+
+### Iteration 1
+
+Main outcomes:
+
+- Flask backend
+- Chatbot interface
+- AI-generated responses
+- Conversation logging
+- Shared GitHub repository
+- Initial styling and interaction flow
+
+### Iteration 2
+
+Main outcomes:
+
+- Internship dataset cleaning
+- Useful-column selection
+- Chatbot scope definition
+- Sample-question preparation
+- Create Account and Sign In interfaces
+- CSV-based account storage
+- Sign-in validation
+- Account-not-found handling
+
+### Iteration 3
+
+Current outcomes:
+
+- Internship dataset connected to Flask
+- Natural job-search detection
+- Program, strength, and experience collection
+- Job ranking and result display
+- Result selection
+- Focused application guidance
+- Reliability notice for stored records
+- Open questions during active workflows
+
+Remaining work includes broader testing, production security, and optional live vacancy integration.
+
+---
+
+## Documentation
+
+| Document | Purpose |
 |---|---|
-| Backend | Python 3.11+, Flask 3.x |
-| AI | Google Gemini 2.5 Flash |
-| Frontend | HTML5, CSS3, Vanilla JavaScript |
-| Markdown rendering | marked.js |
-| Conversation storage | CSV |
-| Account storage | CSV-based account system in progress |
-| Dataset processing | Python and pandas |
-| Version control | Git and GitHub |
+| [JOB_FLOW_README.md](JOB_FLOW_README.md) | Detailed routing, workflow, job selection, and interruption behavior |
+| [LATEST_UPDATE.md](LATEST_UPDATE.md) | Summary of recent implementation changes |
+| [iteration-1](iteration-1/) | Iteration 1 planning and working documentation |
+| [iteration-2](iteration-2/) | Iteration 2 planning and working documentation |
 
 ---
 
-# Development Iterations
+## Team Responsibilities
 
-## Iteration 1 — Basic AI Chatbot Prototype
-
-**Period:** 19 May 2026 to 6 June 2026  
-**Duration:** Approximately 15 working days  
-**Team capacity:** 45 person-days  
-**Goal:** Build a working chatbot where users can ask career and internship questions, receive AI-generated responses, and have conversations recorded automatically.
-
-| # | User Story | Priority | Duration | Status |
-|---|---|---:|---:|---|
-| **1** | Access Chatbot Website | 50 | 1 day | Completed |
-| **2** | Send Chat Message | 50 | 1 day | Completed |
-| **3** | Receive AI Chatbot Reply | 50 | 2 days | Completed |
-| **4** | Integrate Gemini API | 50 | 3 days | Completed |
-| **5** | Create Flask Backend | 50 | 2 days | Completed |
-| **6** | Create Chatbot Interface | 40 | 2 days | Completed |
-| **7** | Apply Website Styling | 30 | 2 days | Completed |
-| **8** | Record Conversation Data | 50 | 2 days | Completed |
-| **9** | Store Conversation Details | 40 | 1 day | Completed |
-| **10** | Create Shared GitHub Repository | 40 | 1 day | Completed |
-
----
-
-## Iteration 2 — Account System and Dataset Preparation
-
-**Duration:** 10 working days  
-**Team capacity:** 30 person-days  
-**Goal:** Allow users to create accounts and sign in through CSV-based storage, while preparing the internship dataset for chatbot integration.
-
-| # | User Story | Priority | Duration | Status |
-|---|---|---:|---:|---|
-| **11** | Clean Internship Dataset | 50 | 3 days | Completed |
-| **12** | Select Useful Internship Columns | 50 | 2 days | Completed |
-| **13** | Define Chatbot Scope | 40 | 1 day | Completed |
-| **14** | Prepare Sample User Questions | 40 | 2 days | Completed |
-| **15** | Design Create Account and Sign In Pages | 50 | 3 days | Completed |
-| **16** | Save New User Account to CSV | 50 | 2 days | In progress |
-| **17** | Validate User Sign In from CSV | 50 | 2 days | In progress |
-| **18** | Show Account Not Found Message | 40 | 1 day | In progress |
-| **19** | Redirect User After Account Creation | 40 | 1 day | TODO |
-| **20** | Test Chatbot on Different Devices | 40 | 2 days | TODO |
-
-### Iteration 2 Testing Focus
-
-Iteration 2 uses test-driven development for the following areas:
-
-- Duplicate, missing-value, and text-format handling in the internship dataset
-- Required-column selection and missing-column handling
-- In-scope and out-of-scope chatbot questions
-- Exact, differently worded, and unclear sample questions
-- Account-field validation and password confirmation
-- Navigation between the Create Account and Sign In pages
-- CSV account creation and sign-in validation
-- Account-not-found error handling
-
-### Current Team Responsibilities
-
-| Team Member | Main Responsibility |
+| Team Member | Primary Responsibility |
 |---|---|
-| Pinky | Create Account and Sign In frontend pages — completed |
-| Airish Yacob Lie | Flask account routes and `users.csv` integration - completed |
-| Henry | Dataset preparation, test questions, testing support, and documentation - complted |
-
----
-
-## Iteration 3 — Internship Search Feature
-
-**Duration:** 10 working days  
-**Team capacity:** 30 person-days  
-**Goal:** Connect the cleaned internship dataset to the chatbot so it can find, rank, filter, and display relevant internship opportunities.
-
-| # | User Story | Priority | Duration | Status |
-|---|---|---:|---:|---|
-| **21** | Connect Internship Dataset to Backend | 50 | 4 days | TODO |
-| **22** | Search Internship Opportunities | 50 | 3 days | TODO |
-| **23** | Display Relevant Internship Results | 50 | 2 days | TODO |
-| **24** | Return Top Matching Results | 40 | 2 days | TODO |
-| **25** | Filter Internship Results | 40 | 3 days | TODO |
-| **26** | Add Reliable Information Notice | 40 | 1 day | TODO |
-| **27** | Add Privacy Notice | 40 | 1 day | TODO |
-| **28** | Add Password Visibility Icon | 30 | 1 day | Optional |
-| **29** | Add Password Strength Indicator | 30 | 2 days | Optional |
-| **30** | Explore RAG or a Self-Hosted LLM | 10 | 4 days | Optional |
-| **31** | Redirect User After Account Creation | 40 | 1 day | TODO |
-| **32** | Test Chatbot on Different Devices | 40 | 2 days | TODO |
-
-### Recommended Iteration 3 Team Split
-
-| Role | Main Responsibility |
-|---|---|
-| Person 1 | Internship-results display interface |
-| Person 2 | Backend search and filtering functions |
-| Person 3 | Dataset validation, testing, privacy notice, reliability notice, and documentation |
+| Pinky | Create Account and Sign In frontend interfaces |
+| Airish Yacob Lie | Flask account routes and `users.csv` integration |
+| Henry | Dataset preparation, sample questions, testing support, job-flow development, and documentation |
 
 ---
 
 ## Current Limitations
 
-- Account creation is not fully connected to CSV storage yet.
-- Sign-in validation and account-not-found handling are still in progress.
-- The internship dataset is not yet connected to the Flask chatbot backend.
-- Internship search, ranking, and filtering are planned for Iteration 3.
-- Authentication remains a development-stage CSV solution and is not intended for production use.
-- AI-generated career guidance should be reviewed by users before they make important decisions.
+- The internship CSV is not a live vacancy feed.
+- Users must verify whether a listing is still active.
+- Some records may not contain complete descriptions or application URLs.
+- The CSV account system is not suitable for production use.
+- Password storage must be replaced with secure hashing before deployment.
+- CSV files are not appropriate for concurrent production traffic.
+- Free LLM endpoints may experience rate limits, timeouts, or temporary outages.
+- AI-generated answers may contain incomplete or inaccurate information.
+- Current public vacancies require a separate maintained job-provider API.
 
 ---
 
-## Priority Scale
+## Contributing
 
-| Priority | Meaning |
-|---:|---|
-| 50 | Most important |
-| 40 | High priority |
-| 30 | Medium priority |
-| 20 | Low priority |
-| 10 | Least important or optional |
+Development work should be completed on the assigned branch.
 
----
+Before pushing:
 
-## Future Improvements
+```bash
+git status
+git add <changed-files>
+git commit -m "Describe the change"
+git push origin <branch-name>
+```
 
-After Iteration 3, possible improvements include:
-
-- Replacing CSV account storage with a database
-- Hashing passwords securely
-- Adding stronger input validation and error handling
-- Improving internship ranking and recommendation quality
-- Adding automated tests and continuous integration
-- Exploring retrieval-augmented generation
-- Evaluating a self-hosted language model
-- Improving accessibility and mobile responsiveness
+Do not commit `.env`, active API keys, private account records, or confidential conversation data to a public repository.
 
 ---
 
 ## Security Notes
 
-- Never commit the `.env` file or Gemini API key to GitHub.
-- Add generated account and conversation data to `.gitignore` when appropriate.
-- Do not use plain-text password storage in a production environment.
-- Replace the CSV account system with a secure database and password hashing before deployment.
+- Never commit real API keys.
+- Revoke any key exposed in Git history or screenshots.
+- Do not use plaintext passwords in production.
+- Replace CSV account storage with a database and password hashing before deployment.
+- Do not use Flask debug mode in production.
+- Apply access controls and data-retention rules before handling real user information.
+
+---
+
+## Educational Disclaimer
+
+This repository is an educational project developed for ASE CP3407. InternAI CareerBot is intended for coursework, demonstration, testing, and educational use only. It does not provide professional career, legal, financial, employment, or immigration advice. Internship and job records may be incomplete, outdated, or no longer available, and users must verify all vacancies, requirements, deadlines, compensation details, and application instructions directly with the relevant employer or official source. AI-generated responses may contain errors or omissions and should not be treated as guaranteed, authoritative, or official information. The development team is not responsible for decisions, applications, losses, privacy incidents, or other outcomes resulting from the use of this software.

@@ -70,7 +70,7 @@
           <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
         </div>
         <h1 id="welcomeH">How can I help you, {{ username }}?</h1>
-        <p class="sub">Powered by Google Gemini — ask me anything about internships, resumes, interviews, or career planning.</p>
+        <p class="sub">Uses the response dataset first, the guided job flow for job searches, and OpenRouter for unmatched open-ended career questions.</p>
         <div class="sug-grid">
           <div class="sug-card" onclick="useSug(this)">
             <div class="sug-title">Find internships for me</div>
@@ -111,7 +111,7 @@
           </div>
         </div>
         <div class="input-hint">
-          Gemini AI · Responses may not reflect official university information
+          Dataset + OpenRouter fallback · Verify current vacancies and avoid sharing confidential information
         </div>
       </div>
     </div>
@@ -234,11 +234,10 @@ function addBotMsg(md, process, anim = true) {
   // process badge
   const badge = document.createElement('div');
   if (process) {
-    const isKw = process.toLowerCase().includes('keyword');
-    badge.className = `process-badge ${isKw ? 'kw' : 'ai'}`;
-    badge.innerHTML = isKw
-      ? `<svg width="10" height="10" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" fill="none"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>${esc(process)}`
-      : `<svg width="10" height="10" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" fill="none"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>Gemini 2.5 Flash`;
+    const p = process.toLowerCase();
+    const kind = p.includes('job flow') ? 'job' : (p.includes('response dataset') || p.includes('related response') ? 'kw' : 'ai');
+    badge.className = `process-badge ${kind}`;
+    badge.innerHTML = `<svg width="10" height="10" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" fill="none"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/></svg>${esc(process)}`;
   }
 
   // action row
